@@ -423,7 +423,8 @@
 
     .masonry-item.hidden { display: none; }
 
-    @media (max-width:900px) { .masonry { columns: 2; } }
+    @media (max-width:900px) { .masonry { columns: 2; column-gap: .8rem; } }
+    @media (max-width:560px) { .masonry { columns: 2; column-gap: 6px; } }
 
     /* Galerie-Beschreibung */
     .gallery-desc {
@@ -506,7 +507,6 @@
       font-size: .75rem; text-transform: uppercase;
       letter-spacing: 2px; color: var(--muted);
     }
-    @media (max-width:768px) {
 
     /* ============================
        ABOUT
