@@ -1,0 +1,1528 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chritakk.photography | Christian Takkin</title>
+  <style>
+    /* ============================
+       RESET & BASE
+       ============================ */
+    *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f0f0f0;
+      --muted: #666;
+      --gold: #d4a853;
+      --gold-dim: rgba(212,168,83,.15);
+      --glass: rgba(255,255,255,.04);
+      --glass-border: rgba(255,255,255,.06);
+      --radius: 12px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ease: cubic-bezier(.25,.1,.25,1);
+    }
+
+    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    *::selection { background: var(--gold); color: var(--bg); }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.65;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    a { color: var(--gold); text-decoration: none; transition: color .3s; }
+    a:hover { color: var(--fg); }
+    img { display: block; width: 100%; height: auto; }
+    .container { max-width: 1320px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ============================
+       CUSTOM CURSOR
+       ============================ */
+    .cursor-dot,
+    .cursor-ring {
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: width .3s, height .3s, background .3s, border-color .3s;
+    }
+    .cursor-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+    .cursor-ring {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      transition: width .25s, height .25s, background .25s, border-color .25s, left .08s, top .08s;
+    }
+    .cursor-ring.hover {
+      width: 70px; height: 70px;
+      background: rgba(212,168,83,.08);
+      border-color: var(--gold);
+    }
+
+    @media (max-width:768px) {
+      body { cursor: auto; }
+      .cursor-dot,.cursor-ring { display: none; }
+    }
+
+    /* ============================
+       LOADER
+       ============================ */
+    .loader {
+      position: fixed; inset: 0; z-index: 99998;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      transition: opacity .8s ease, visibility .8s ease;
+    }
+    .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-ring {
+      width: 48px; height: 48px;
+      border: 2px solid rgba(212,168,83,.1);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .loader p {
+      margin-top: 1.5rem;
+      font-size: .8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    /* ============================
+       PROGRESS BAR
+       ============================ */
+    #progressBar {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), #f0d080);
+      z-index: 9999;
+      width: 0%;
+      transition: width .1s linear;
+    }
+
+    /* ============================
+       NAV
+       ============================ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      padding: 1.4rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background .5s, padding .3s, backdrop-filter .5s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,.78);
+      backdrop-filter: blur(18px) saturate(1.2);
+      padding: .9rem 2rem;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      color: var(--fg);
+    }
+    .logo span { color: var(--gold); }
+    .logo .tagline {
+      display: block;
+      font-size: .6rem;
+      font-family: var(--font-sans);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: -2px;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--fg);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      padding: 4px 0;
+      transition: color .3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width .4s var(--ease);
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--bg) !important;
+      padding: .5rem 1.4rem !important;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: transform .3s, box-shadow .3s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(212,168,83,.3);
+      color: var(--bg) !important;
+    }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 26px; height: 2px;
+      background: var(--fg); transition: .35s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ============================
+       HERO
+       ============================ */
+    .hero {
+      position: relative;
+      height: 100vh; min-height: 700px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1920&q=85') center/cover no-repeat;
+      transform: scale(1.05);
+      transition: transform .2s var(--ease);
+      will-change: transform;
+    }
+    .hero-gradient {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(10,10,10,.3) 0%, rgba(10,10,10,.85) 100%);
+    }
+    .hero-scrim {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 30%;
+      background: linear-gradient(transparent, var(--bg));
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; max-width: 900px; padding: 0 2rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: .7rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: .4rem 1.4rem;
+      border-radius: 50px;
+      margin-bottom: 2rem;
+      opacity: 0; transform: translateY(20px);
+      animation: heroFade .8s .2s forwards;
+    }
+    .hero-content h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      font-weight: 400;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      opacity: 0; transform: translateY(40px);
+      animation: heroFade .9s .4s forwards;
+    }
+    .hero-content h1 .outline {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--fg);
+      text-stroke: 1px var(--fg);
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 600px; margin: 0 auto 2.5rem;
+      letter-spacing: 1px;
+      opacity: 0; transform: translateY(30px);
+      animation: heroFade .9s .6s forwards;
+    }
+    .hero-content p span { color: var(--fg); }
+
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      opacity: 0; transform: translateY(30px);
+      animation: heroFade .9s .8s forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .9rem 2.2rem;
+      font-size: .82rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 2px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s, background .3s, color .3s;
+      font-family: var(--font-sans);
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(212,168,83,.3);
+      color: var(--bg);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.2);
+      color: var(--fg);
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .scroll-hint {
+      position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+      z-index: 3;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; color: var(--muted); font-size: .65rem; letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: heroFade 1s 1.2s forwards;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(var(--gold), transparent);
+      animation: scrollLine 2s infinite;
+    }
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: top; opacity: 0; }
+    }
+    @keyframes heroFade { to { opacity: 1; transform: translateY(0); } }
+
+    /* ============================
+       SECTION GLUE
+       ============================ */
+    .section { padding: 7rem 0; position: relative; }
+    .section-label {
+      font-size: .7rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .5rem;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem,5vw,3.5rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .section-desc {
+      color: var(--muted);
+      max-width: 600px;
+      font-size: 1rem;
+      margin-bottom: 3.5rem;
+    }
+    .text-center { text-align: center; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+
+    /* ============================
+       REVEAL ANIMATION
+       ============================ */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0; transform: translateX(-50px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0; transform: translateX(50px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-scale {
+      opacity: 0; transform: scale(.92);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+    /* ============================
+       GALLERY (MASONRY)
+       ============================ */
+    .filter-bar {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: .5rem; margin-bottom: 3rem;
+    }
+    .filter-btn {
+      background: none; border: 1px solid rgba(255,255,255,.08);
+      color: var(--muted);
+      padding: .55rem 1.3rem;
+      font-size: .72rem; text-transform: uppercase; letter-spacing: 2px;
+      cursor: pointer; border-radius: 50px;
+      transition: .3s; font-family: var(--font-sans);
+    }
+    .filter-btn:hover { border-color: rgba(212,168,83,.3); color: var(--gold); }
+    .filter-btn.active {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .masonry {
+      columns: 3; column-gap: 1rem;
+    }
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      cursor: pointer;
+      background: rgba(255,255,255,.03);
+    }
+    .masonry-item img {
+      width: 100%; height: auto;
+      display: block;
+      transition: transform .7s var(--ease);
+    }
+    .masonry-item:hover img { transform: scale(1.06); }
+
+    .masonry-item .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 60%);
+      display: flex; align-items: flex-end; padding: 1.5rem;
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .masonry-item:hover .overlay { opacity: 1; }
+    .masonry-item .overlay span {
+      color: var(--fg);
+      font-size: .75rem; letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    .masonry-item.hidden { display: none; }
+
+    @media (max-width:900px) { .masonry { columns: 2; } }
+    @media (max-width:560px) { .masonry { columns: 1; } }
+
+    /* ============================
+       LIGHTBOX
+       ============================ */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,.94);
+      display: none; align-items: center; justify-content: center;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 88vw; max-height: 88vh;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 20px 80px rgba(0,0,0,.6);
+      animation: lbIn .4s var(--ease);
+    }
+    @keyframes lbIn { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+    .lightbox .close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      font-size: 2.4rem; color: var(--fg);
+      background: none; border: none; cursor: pointer;
+      opacity: .4; transition: .3s;
+    }
+    .lightbox .close:hover { opacity: 1; }
+    .lightbox .lb-nav {
+      position: absolute; top: 50%; left: 0; right: 0;
+      transform: translateY(-50%);
+      display: flex; justify-content: space-between;
+      padding: 0 1rem; pointer-events: none;
+    }
+    .lightbox .lb-nav button {
+      pointer-events: all;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--fg);
+      font-size: 1.6rem;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: .3s;
+    }
+    .lightbox .lb-nav button:hover { background: rgba(255,255,255,.15); }
+    .lightbox .lb-caption {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: var(--muted); font-size: .85rem; letter-spacing: 2px;
+      background: rgba(0,0,0,.6); padding: .5rem 1.5rem;
+      border-radius: 50px;
+      backdrop-filter: blur(8px);
+    }
+
+    /* ============================
+       STATS
+       ============================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 2rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      padding: 4rem 0;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: var(--font-serif);
+      font-size: 3rem; color: var(--gold);
+      line-height: 1;
+      margin-bottom: .4rem;
+    }
+    .stat-label {
+      font-size: .75rem; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--muted);
+    }
+    @media (max-width:768px) { .stats-grid { grid-template-columns: repeat(2,1fr); gap: 2.5rem; } }
+
+    /* ============================
+       ABOUT
+       ============================ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .about-image {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .about-image img {
+      width: 100%; aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+    .about-image::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: var(--radius);
+      box-shadow: inset 0 0 60px rgba(0,0,0,.4);
+    }
+    .about-image .exp-badge {
+      position: absolute; bottom: -1rem; right: -1rem;
+      background: var(--gold);
+      color: var(--bg);
+      padding: 1.2rem 1.8rem;
+      border-radius: var(--radius);
+      text-align: center;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+    .about-image .exp-badge span { display: block; font-size: 2rem; font-family: var(--font-serif); }
+
+    .about-text h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem; font-weight: 400;
+      margin-bottom: 1.2rem;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: .95rem; }
+    .about-tags {
+      display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 2rem;
+    }
+    .about-tags span {
+      border: 1px solid rgba(255,255,255,.08);
+      padding: .4rem 1rem;
+      font-size: .7rem; text-transform: uppercase; letter-spacing: 2px;
+      color: var(--muted); border-radius: 50px;
+      transition: .3s;
+    }
+    .about-tags span:hover { border-color: var(--gold); color: var(--gold); }
+
+    @media (max-width:860px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-image .exp-badge { right: 0; }
+    }
+
+    /* ============================
+       PRICING
+       ============================ */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .price-card {
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      transition: transform .4s, border-color .4s, box-shadow .4s;
+      position: relative;
+    }
+    .price-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212,168,83,.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    }
+    .price-card.featured {
+      border-color: var(--gold);
+      background: rgba(212,168,83,.04);
+    }
+    .price-card.featured .badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: var(--bg);
+      font-size: .65rem; text-transform: uppercase; letter-spacing: 2px;
+      padding: .3rem 1.2rem; border-radius: 50px;
+      font-weight: 600;
+    }
+    .price-card h4 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem; font-weight: 400;
+      margin-bottom: .3rem;
+    }
+    .price-card .price {
+      font-size: 2.2rem; font-family: var(--font-serif);
+      color: var(--gold); margin: 1rem 0;
+    }
+    .price-card .price small {
+      font-size: .8rem; font-family: var(--font-sans);
+      color: var(--muted);
+    }
+    .price-card ul {
+      list-style: none; margin: 1.5rem 0;
+    }
+    .price-card ul li {
+      padding: .4rem 0; font-size: .85rem;
+      color: var(--muted);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .price-card ul li::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .price-card .btn {
+      width: 100%; justify-content: center;
+      margin-top: .5rem;
+    }
+
+    @media (max-width:860px) { .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; } }
+
+    /* ============================
+       TESTIMONIALS
+       ============================ */
+    .testimonials {
+      background: rgba(255,255,255,.015);
+      border-top: 1px solid rgba(255,255,255,.04);
+      border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+    .testimonial-slider {
+      max-width: 700px; margin: 0 auto;
+      position: relative; min-height: 200px;
+    }
+    .testimonial-slide {
+      display: none;
+      text-align: center;
+      animation: fadeSlide .5s ease;
+    }
+    .testimonial-slide.active { display: block; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .testimonial-slide blockquote {
+      font-family: var(--font-serif);
+      font-size: 1.4rem; font-style: italic;
+      line-height: 1.6; color: var(--fg);
+      margin-bottom: 1.5rem;
+    }
+    .testimonial-slide cite {
+      font-style: normal; color: var(--muted);
+      font-size: .85rem; letter-spacing: 1px;
+    }
+    .testimonial-slide cite strong { color: var(--gold); }
+    .testimonial-dots {
+      display: flex; justify-content: center; gap: .6rem; margin-top: 2rem;
+    }
+    .testimonial-dots button {
+      width: 10px; height: 10px;
+      border: 1px solid var(--muted); border-radius: 50%;
+      background: transparent; cursor: pointer; transition: .3s;
+    }
+    .testimonial-dots button.active { background: var(--gold); border-color: var(--gold); }
+
+    /* ============================
+       INSTAGRAM STRIP
+       ============================ */
+    .ig-strip {
+      display: grid;
+      grid-template-columns: repeat(6,1fr);
+      gap: .5rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .ig-strip a {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .ig-strip a img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s;
+    }
+    .ig-strip a:hover img { transform: scale(1.1); }
+    .ig-strip a .ig-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: .3s;
+      font-size: 1.5rem;
+    }
+    .ig-strip a:hover .ig-overlay { opacity: 1; }
+
+    @media (max-width:768px) { .ig-strip { grid-template-columns: repeat(3,1fr); } }
+
+    /* ============================
+       CONTACT
+       ============================ */
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-info h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem; font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .contact-info p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-info .detail {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .contact-info .detail .icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .contact-info .detail a { color: var(--fg); }
+    .contact-info .detail a:hover { color: var(--gold); }
+
+    .contact-form {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .contact-form .row { display: flex; gap: 1rem; }
+    .contact-form .row input { flex: 1; }
+    .contact-form input,
+    .contact-form textarea {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 1rem 1.2rem;
+      color: var(--fg);
+      font-family: var(--font-sans);
+      font-size: .9rem;
+      border-radius: var(--radius);
+      transition: border .3s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(255,255,255,.06);
+    }
+    .contact-form textarea {
+      min-height: 140px; resize: vertical;
+    }
+    .contact-form button {
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: .9rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 2px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s;
+      font-family: var(--font-sans);
+      align-self: flex-start;
+    }
+    .contact-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(212,168,83,.3);
+    }
+
+    @media (max-width:768px) {
+      .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-form .row { flex-direction: column; }
+    }
+
+    /* ============================
+       FOOTER
+       ============================ */
+    footer {
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 4rem 0 2rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo { font-size: 1.6rem; }
+    .footer-brand p { color: var(--muted); font-size: .9rem; margin-top: 1rem; max-width: 300px; }
+    .footer-col h5 {
+      font-size: .75rem; text-transform: uppercase; letter-spacing: 2px;
+      color: var(--fg); margin-bottom: 1.2rem;
+    }
+    .footer-col a {
+      display: block; color: var(--muted); font-size: .9rem;
+      margin-bottom: .6rem; transition: color .3s;
+    }
+    .footer-col a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.04);
+      padding-top: 2rem;
+      display: flex; justify-content: space-between;
+      font-size: .8rem; color: var(--muted);
+    }
+    @media (max-width:768px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+    /* ============================
+       BACK TO TOP
+       ============================ */
+    #backToTop {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 800;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      opacity: 0; visibility: hidden;
+      transform: translateY(20px);
+      transition: opacity .4s, transform .4s, box-shadow .3s;
+      box-shadow: 0 4px 20px rgba(212,168,83,.2);
+    }
+    #backToTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    #backToTop:hover { box-shadow: 0 6px 30px rgba(212,168,83,.4); transform: translateY(-3px); }
+  </style>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-ring"></div>
+    <p>chritakk.photography</p>
+  </div>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- PROGRESS BAR -->
+  <div id="progressBar"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="logo">
+      chritakk<span>.photography</span>
+      <span class="tagline">Christian Takkin · Fotograf</span>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#gallery">Galerie</a></li>
+      <li><a href="#about">Über mich</a></li>
+      <li><a href="#pricing">Leistungen</a></li>
+      <li><a href="#contact" class="nav-cta">Kontakt</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-scrim"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">Fotografie mit Herz &amp; am Limit</div>
+      <h1>
+        Momente, die<br>
+        <span class="outline">für immer bleiben</span>
+      </h1>
+      <p>
+        <span>Events · Portrait · Tiere · Produkte · Automotive · Rollingshots · Newborn</span><br>
+        – ich halte fest, was dir wichtig ist.
+      </p>
+      <div class="hero-actions">
+        <a href="#gallery" class="btn btn-primary">Galerie entdecken</a>
+        <a href="#contact" class="btn btn-outline">Anfrage senden</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section" id="gallery">
+    <div class="container text-center">
+      <p class="section-label reveal">Galerie</p>
+      <h2 class="section-title reveal">Meine Arbeiten</h2>
+      <p class="section-desc mx-auto reveal">Jede Kategorie erzählt ihre eigene Geschichte. Entdecke meine Welt durch die Linse.</p>
+
+      <div class="filter-bar reveal">
+        <button class="filter-btn active" data-filter="all">Alle</button>
+        <button class="filter-btn" data-filter="events">Events</button>
+        <button class="filter-btn" data-filter="portrait">Portrait</button>
+        <button class="filter-btn" data-filter="animals">Tiere</button>
+        <button class="filter-btn" data-filter="product">Produkte</button>
+        <button class="filter-btn" data-filter="automotive">Automotive</button>
+        <button class="filter-btn" data-filter="rollingshots">Rollingshots</button>
+        <button class="filter-btn" data-filter="newborn">Newborn</button>
+      </div>
+
+      <div class="masonry" id="masonryGrid"></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="section" style="padding-top:0;">
+    <div class="container reveal">
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-number" data-count="50" data-suffix="+">0</div><div class="stat-label">Shootings</div></div>
+        <div class="stat-item"><div class="stat-number" data-count="4" data-suffix="+">0</div><div class="stat-label">Jahre Erfahrung</div></div>
+        <div class="stat-item"><div class="stat-number" data-count="100" data-suffix="%">0</div><div class="stat-label">Zufriedene Kunden</div></div>
+        <div class="stat-item"><div class="stat-number" data-count="7">0</div><div class="stat-label">Genres</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image reveal-left">
+          <img
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&q=85"
+            alt="Christian Takkin – Fotograf"
+          />
+          <div class="exp-badge"><span>4+</span> Jahre</div>
+        </div>
+        <div class="about-text reveal-right">
+          <p class="section-label">Über mich</p>
+          <h3>Christian Takkin –<br>Geschichten durch die Linse</h3>
+          <p>
+            Hallo! Ich bin <strong>Christian</strong> – leidenschaftlicher Fotograf
+            aus Leidenschaft. Schon als Kind habe ich die Welt durch
+            Sucher betrachtet, und heute ist es mein Beruf, die
+            schönsten Momente des Lebens einzufangen.
+          </p>
+          <p>
+            Ob die Tränen der Freude bei einem Event, das erste
+            Lächeln eines Neugeborenen, die Eleganz eines Sportwagens
+            oder die treuen Augen deines Haustiers – ich liebe die
+            Vielfalt und jede neue Herausforderung.
+          </p>
+          <p>
+            Mein Stil ist authentisch, emotional und nah dran. Ich
+            möchte nicht nur Bilder machen, sondern Geschichten
+            erzählen – deine Geschichten.
+          </p>
+          <div class="about-tags">
+            <span>Events</span><span>Portrait</span><span>Tiere</span>
+            <span>Produkte</span><span>Automotive</span><span>Rollingshots</span><span>Newborn</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing">
+    <div class="container text-center">
+      <p class="section-label reveal">Leistungen</p>
+      <h2 class="section-title reveal">Meine Pakete</h2>
+      <p class="section-desc mx-auto reveal">Für jedes Budget und jedes Projekt das passende Angebot. Maßgeschneidert – ganz nach deinen Wünschen.</p>
+
+      <div class="pricing-grid reveal">
+        <div class="price-card">
+          <h4>Portrait / Tiere</h4>
+          <div class="price">ab 129€</div>
+          <ul>
+            <li>Ca. 30 Min. Shooting</li>
+            <li>Outdoor oder Location</li>
+            <li>30–50 digital bearbeitete Bilder</li>
+            <li>Online-Galerie zum Teilen</li>
+            <li>Jedes weitere Bild +5€</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Anfragen</a>
+        </div>
+
+        <div class="price-card">
+          <h4>Automotive / Produkt</h4>
+          <div class="price">ab 149€</div>
+          <ul>
+            <li>1–2 Stunden Shooting</li>
+            <li>Outdoor &amp; Location-Aufnahmen</li>
+            <li>30–50 digital bearbeitete Bilder</li>
+            <li>Gewerbliche Nutzung inklusive</li>
+            <li>Jedes weitere Bild +5€</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Anfragen</a>
+        </div>
+
+        <div class="price-card featured">
+          <div class="badge">Beliebt</div>
+          <h4>Rollingshots</h4>
+          <div class="price">ab 99€</div>
+          <ul>
+            <li>Ca. 30 Min. on the road</li>
+            <li>Dynamische Fahraufnahmen</li>
+            <li>10+ digital bearbeitete Bilder</li>
+            <li>Online-Galerie zum Teilen</li>
+            <li>Jedes weitere Bild +5€</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Anfragen</a>
+        </div>
+
+        <div class="price-card">
+          <h4>Events</h4>
+          <div class="price">ab 899€</div>
+          <ul>
+            <li>6 Stunden Begleitung</li>
+            <li>2. Location / Vorbereitung</li>
+            <li>150+ digital bearbeitete Bilder</li>
+            <li>Online-Galerie &amp; USB-Stick</li>
+            <li>Vorschaugalerie nach 48h</li>
+            <li>Jedes weitere Bild +5€</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Anfragen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section testimonials">
+    <div class="container text-center">
+      <p class="section-label reveal">Kundenstimmen</p>
+      <h2 class="section-title reveal">Das sagen meine Kunden</h2>
+
+      <div class="testimonial-slider reveal">
+        <div class="testimonial-slide active">
+          <blockquote>„Christian hat unsere Hochzeit so wunderschön festgehalten – wir waren beide sprachlos, als wir die Bilder gesehen haben. Absolut professionell und mit so viel Herzblut dabei!"</blockquote>
+          <cite><strong>Sarah &amp; Lukas</strong> · Events</cite>
+        </div>
+        <div class="testimonial-slide">
+          <blockquote>„Die Fotos von unserem neugeborenen Sohn sind einfach unbeschreiblich. Christian hat eine so ruhige Art – wir haben uns total wohlgefühlt."</blockquote>
+          <cite><strong>Julia</strong> · Newborn</cite>
+        </div>
+        <div class="testimonial-slide">
+          <blockquote>„Endlich ein Fotograf, der mein Auto so in Szene setzt, wie ich es mir vorgestellt habe. Die Bilder sind der Wahnsinn – absolut empfehlenswert!"</blockquote>
+          <cite><strong>Marc</strong> · Automotive</cite>
+        </div>
+        <div class="testimonial-slide">
+          <blockquote>„Christian hat ein unglaubliches Auge für Details. Meine Produkte sehen auf den Bildern noch besser aus als in echt! Sehr zu empfehlen."</blockquote>
+          <cite><strong>Anna</strong> · Produktfotografie</cite>
+        </div>
+      </div>
+      <div class="testimonial-dots">
+        <button class="active" data-slide="0"></button>
+        <button data-slide="1"></button>
+        <button data-slide="2"></button>
+        <button data-slide="3"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM STRIP -->
+  <section class="section">
+    <div class="container text-center">
+      <p class="section-label reveal">Instagram</p>
+      <h2 class="section-title reveal" style="margin-bottom:3rem;">
+        Folge mir auf <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener" style="color:var(--gold);">@chritakk.photography</a>
+      </h2>
+
+      <div class="ig-strip reveal">
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&q=80" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=80" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&q=80" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?w=400&q=80" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="contact-wrap">
+        <div class="contact-info reveal-left">
+          <p class="section-label">Kontakt</p>
+          <h3>Lass uns <span style="color:var(--gold);">arbeiten</span></h3>
+          <p>Du hast ein Projekt im Kopf oder möchtest einfach mal unverbindlich plaudern? Schreib mir – ich freue mich auf dich!</p>
+
+          <div class="detail">
+            <div class="icon">&#9993;</div>
+            <a href="mailto:chritakk.photography@gmail.com">chritakk.photography@gmail.com</a>
+          </div>
+          <div class="detail">
+            <div class="icon">&#64;</div>
+            <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">@chritakk.photography</a>
+          </div>
+          <div class="detail">
+            <div class="icon">&#9679;</div>
+            <a href="https://www.linkedin.com/in/chritakk-photography/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+
+        <form class="contact-form reveal-right" id="contactForm">
+          <div class="row">
+            <input type="text" placeholder="Dein Name" required />
+            <input type="email" placeholder="Deine E-Mail" required />
+          </div>
+          <input type="text" placeholder="Betreff" />
+          <textarea placeholder="Erzähl mir von deinem Projekt …" required></textarea>
+          <button type="submit">Nachricht senden</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">chritakk<span>.photography</span></div>
+          <p>Momente einfangen, Geschichten erzählen – das ist meine Leidenschaft. Christian Takkin, Fotograf aus Leidenschaft.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="#gallery">Galerie</a>
+          <a href="#about">Über mich</a>
+          <a href="#pricing">Leistungen</a>
+          <a href="#contact">Kontakt</a>
+        </div>
+        <div class="footer-col">
+          <h5>Social</h5>
+          <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.linkedin.com/in/chritakk-photography/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:chritakk.photography@gmail.com">E-Mail</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 chritakk.photography</span>
+        <span>Made mit &#9829; und viel Kaffee</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="lbClose">&times;</button>
+    <div class="lb-nav">
+      <button id="lbPrev">&#8249;</button>
+      <button id="lbNext">&#8250;</button>
+    </div>
+    <img id="lbImg" src="" alt="" />
+    <p class="lb-caption" id="lbCaption"></p>
+  </div>
+
+  <!-- BACK TO TOP -->
+  <button id="backToTop" aria-label="Nach oben">&#8593;</button>
+
+  <script>
+    // ============================
+    // DATA
+    // ============================
+    /*
+     * ============================
+     * FOTO-DATEN – LOKALE BILDER
+     * ============================
+     * Dieses Array wird automatisch von generate-gallery.ps1 befüllt.
+     *
+     * So funktioniert's:
+     *   1. Sortiere deine Fotos in die Unterordner:
+     *        images/events/       → Events
+     *        images/portrait/     → Portrait
+     *        images/animals/      → Tiere
+     *        images/product/      → Produkte
+     *        images/automotive/   → Automotive
+     *        images/rollingshots/  → Rollingshots
+     *        images/newborn/      → Newborn
+     *   2. Führe generate-gallery.ps1 aus
+     *   3. Fertig! Der Array wird mit deinen echten Bildern ersetzt.
+     *
+     * Beispieleinträge bis dahin:
+     */
+    const photos = [
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063817/chritakk/1BA1B43E-B8E6-4DE4-8BC1-474749D3724E.jpg', alt:'Foto', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063819/chritakk/DSC03082.jpg', alt:'Foto 3082', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063821/chritakk/DSC03099.jpg', alt:'Foto 3099', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063824/chritakk/DSC03199.jpg', alt:'Foto 3199', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063825/chritakk/DSC03246.jpg', alt:'Foto 3246', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063827/chritakk/DSC03287.jpg', alt:'Foto 3287', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063829/chritakk/DSC03297.jpg', alt:'Foto 3297', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063831/chritakk/DSC03514.jpg', alt:'Foto 3514', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063832/chritakk/DSC03586.jpg', alt:'Foto 3586', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063834/chritakk/DSC05367.jpg', alt:'Foto 5367', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063836/chritakk/DSC05380.jpg', alt:'Foto 5380', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063838/chritakk/DSC05399.jpg', alt:'Foto 5399', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063839/chritakk/DSC06360.jpg', alt:'Foto 6360', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063841/chritakk/DSC06434.jpg', alt:'Foto 6434', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063843/chritakk/DSC06657.jpg', alt:'Foto 6657', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063844/chritakk/DSC06660.jpg', alt:'Foto 6660', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063846/chritakk/DSC06735.jpg', alt:'Foto 6735', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063847/chritakk/DSC06767.jpg', alt:'Foto 6767', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063849/chritakk/DSC08487.jpg', alt:'Foto 8487', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063851/chritakk/DSC08603.jpg', alt:'Foto 8603', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063853/chritakk/DSC08653.jpg', alt:'Foto 8653', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063855/chritakk/DSC08654.jpg', alt:'Foto 8654', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063856/chritakk/DSC08672.jpg', alt:'Foto 8672', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063858/chritakk/IMG_0321.jpg', alt:'Foto 321', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063860/chritakk/IMG_0876.jpg', alt:'Foto 876', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063862/chritakk/IMG_1113.jpg', alt:'Foto 1113', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063864/chritakk/IMG_1173.jpg', alt:'Foto 1173', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063865/chritakk/IMG_1176.jpg', alt:'Foto 1176', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063867/chritakk/IMG_1177.jpg', alt:'Foto 1177', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063868/chritakk/IMG_1200.jpg', alt:'Foto 1200', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063870/chritakk/IMG_1201.jpg', alt:'Foto 1201', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063872/chritakk/IMG_1203.jpg', alt:'Foto 1203', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063873/chritakk/IMG_1206.jpg', alt:'Foto 1206', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063875/chritakk/IMG_1583.jpg', alt:'Foto 1583', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063877/chritakk/IMG_1597.jpg', alt:'Foto 1597', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063878/chritakk/IMG_1603.jpg', alt:'Foto 1603', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063880/chritakk/IMG_1802.jpg', alt:'Foto 1802', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063882/chritakk/IMG_2145.jpg', alt:'Foto 2145', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063884/chritakk/IMG_2146.jpg', alt:'Foto 2146', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063886/chritakk/IMG_2289.jpg', alt:'Foto 2289', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063887/chritakk/IMG_2290.jpg', alt:'Foto 2290', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063889/chritakk/IMG_3316.jpg', alt:'Foto 3316', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063890/chritakk/IMG_3356.jpg', alt:'Foto 3356', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063892/chritakk/IMG_3452.jpg', alt:'Foto 3452', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063894/chritakk/IMG_3454.jpg', alt:'Foto 3454', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063896/chritakk/IMG_3486.jpg', alt:'Foto 3486', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063897/chritakk/IMG_3492.jpg', alt:'Foto 3492', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063899/chritakk/IMG_3817.jpg', alt:'Foto 3817', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063901/chritakk/IMG_3850.jpg', alt:'Foto 3850', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063902/chritakk/IMG_3859.jpg', alt:'Foto 3859', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063905/chritakk/IMG_3868.jpg', alt:'Foto 3868', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063907/chritakk/IMG_3869.jpg', alt:'Foto 3869', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063908/chritakk/IMG_4449.jpg', alt:'Foto 4449', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063910/chritakk/IMG_4901.jpg', alt:'Foto 4901', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063912/chritakk/IMG_4929.jpg', alt:'Foto 4929', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063915/chritakk/IMG_4949.jpg', alt:'Foto 4949', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063917/chritakk/IMG_5521.jpg', alt:'Foto 5521', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063918/chritakk/IMG_5572.jpg', alt:'Foto 5572', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063920/chritakk/IMG_5826.jpg', alt:'Foto 5826', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063924/chritakk/IMG_5829.jpg', alt:'Foto 5829', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063926/chritakk/IMG_5833.jpg', alt:'Foto 5833', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063928/chritakk/IMG_6037.jpg', alt:'Foto 6037', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063930/chritakk/IMG_7014.jpg', alt:'Foto 7014', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063932/chritakk/IMG_7461.jpg', alt:'Foto 7461', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063934/chritakk/IMG_7462.jpg', alt:'Foto 7462', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063936/chritakk/IMG_7463.jpg', alt:'Foto 7463', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063938/chritakk/IMG_7471.jpg', alt:'Foto 7471', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063939/chritakk/IMG_7475.jpg', alt:'Foto 7475', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063941/chritakk/IMG_7491.jpg', alt:'Foto 7491', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063943/chritakk/IMG_7622.jpg', alt:'Foto 7622', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063944/chritakk/IMG_7623.jpg', alt:'Foto 7623', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063946/chritakk/IMG_7625.jpg', alt:'Foto 7625', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063949/chritakk/IMG_7628.jpg', alt:'Foto 7628', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063951/chritakk/IMG_7630.jpg', alt:'Foto 7630', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063954/chritakk/IMG_7946.jpg', alt:'Foto 7946', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063956/chritakk/IMG_8019.jpg', alt:'Foto 8019', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063958/chritakk/IMG_8036.jpg', alt:'Foto 8036', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063960/chritakk/IMG_8038.jpg', alt:'Foto 8038', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063962/chritakk/IMG_8271.jpg', alt:'Foto 8271', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063964/chritakk/IMG_8272.jpg', alt:'Foto 8272', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063966/chritakk/IMG_8275.jpg', alt:'Foto 8275', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063967/chritakk/IMG_8278.jpg', alt:'Foto 8278', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063970/chritakk/IMG_8768.jpg', alt:'Foto 8768', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063972/chritakk/IMG_8769.jpg', alt:'Foto 8769', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063974/chritakk/IMG_8771.jpg', alt:'Foto 8771', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063976/chritakk/IMG_8772.jpg', alt:'Foto 8772', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063978/chritakk/IMG_8776.jpg', alt:'Foto 8776', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063980/chritakk/IMG_8777.jpg', alt:'Foto 8777', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063981/chritakk/IMG_8780.jpg', alt:'Foto 8780', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063984/chritakk/IMG_8787.jpg', alt:'Foto 8787', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063986/chritakk/IMG_8789.jpg', alt:'Foto 8789', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063988/chritakk/IMG_8790.jpg', alt:'Foto 8790', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063990/chritakk/IMG_8800.jpg', alt:'Foto 8800', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063993/chritakk/IMG_8814.jpg', alt:'Foto 8814', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063996/chritakk/IMG_8816.jpg', alt:'Foto 8816', h:1.5 },
+      { cat:'all', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792063998/chritakk/IMG_8990.jpg', alt:'Foto 8990', h:1.5 },
+    ];
+
+    // ============================
+    // LOADER
+    // ============================
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').classList.add('hidden'), 600);
+    });
+
+    // ============================
+    // CURSOR
+    // ============================
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .masonry-item, .filter-btn, .price-card').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+    });
+
+    // ============================
+    // PROGRESS BAR & NAV SCROLL
+    // ============================
+    const navbar = document.getElementById('navbar');
+    const progressBar = document.getElementById('progressBar');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      progressBar.style.width = Math.min(progress, 100) + '%';
+
+      navbar.classList.toggle('scrolled', scrollTop > 80);
+      document.getElementById('backToTop').classList.toggle('show', scrollTop > 500);
+    });
+
+    // ============================
+    // HAMBURGER
+    // ============================
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // ============================
+    // MASONRY GALLERY
+    // ============================
+    const masonry = document.getElementById('masonryGrid');
+    let filteredPhotos = [];
+
+    function renderMasonry(filter = 'all') {
+      // Wenn alle Fotos cat:'all' haben (noch nicht sortiert), ignoriere Filter
+      const hasRealCategories = photos.some(p => p.cat !== 'all');
+      const items = (!hasRealCategories || filter === 'all') ? photos : photos.filter(p => p.cat === filter);
+      filteredPhotos = items;
+      masonry.innerHTML = '';
+      items.forEach((photo, idx) => {
+        const div = document.createElement('div');
+        div.className = 'masonry-item';
+        div.style.aspectRatio = 'auto';
+        const img = document.createElement('img');
+        img.src = photo.img;
+        img.alt = photo.alt;
+        img.loading = 'lazy';
+        div.appendChild(img);
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        overlay.innerHTML = `<span>${photo.alt}</span>`;
+        div.appendChild(overlay);
+        div.addEventListener('click', () => openLightbox(idx));
+        masonry.appendChild(div);
+      });
+    }
+
+    // Filter
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMasonry(btn.dataset.filter);
+      });
+    });
+
+    // ============================
+    // LIGHTBOX
+    // ============================
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCaption = document.getElementById('lbCaption');
+    let currentIdx = 0;
+
+    function openLightbox(idx) {
+      currentIdx = idx;
+      const p = filteredPhotos[idx];
+      lbImg.src = p.img;
+      lbImg.alt = p.alt;
+      lbCaption.textContent = p.alt;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigateLB(-1);
+      if (e.key === 'ArrowRight') navigateLB(1);
+    });
+    document.getElementById('lbPrev').addEventListener('click', () => navigateLB(-1));
+    document.getElementById('lbNext').addEventListener('click', () => navigateLB(1));
+
+    function navigateLB(dir) {
+      currentIdx = (currentIdx + dir + filteredPhotos.length) % filteredPhotos.length;
+      const p = filteredPhotos[currentIdx];
+      lbImg.src = p.img;
+      lbImg.alt = p.alt;
+      lbCaption.textContent = p.alt;
+    }
+
+    // ============================
+    // STATS COUNTER
+    // ============================
+    function animateCounters() {
+      document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+        const target = parseInt(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        let current = 0;
+        const step = Math.max(1, Math.floor(target / 40));
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(timer); }
+          el.textContent = current + suffix;
+        }, 30);
+      });
+    }
+
+    // ============================
+    // TESTIMONIALS
+    // ============================
+    let testimonialIdx = 0;
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots = document.querySelectorAll('.testimonial-dots button');
+
+    function showTestimonial(idx) {
+      slides.forEach((s,i) => s.classList.toggle('active', i === idx));
+      dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+      testimonialIdx = idx;
+    }
+
+    dots.forEach(d => d.addEventListener('click', () => showTestimonial(parseInt(d.dataset.slide))));
+    setInterval(() => showTestimonial((testimonialIdx + 1) % slides.length), 5000);
+
+    // ============================
+    // REVEAL OBSERVER
+    // ============================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Stats counter einmalig feuern
+          if (entry.target.classList.contains('stats-grid')) {
+            animateCounters();
+          }
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // ============================
+    // FORM
+    // ============================
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert('Danke für deine Nachricht, Christian! Ich melde mich so schnell wie möglich bei dir – versprochen 📸');
+      e.target.reset();
+    });
+
+    // ============================
+    // BACK TO TOP
+    // ============================
+    document.getElementById('backToTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ============================
+    // PARALLAX HERO
+    // ============================
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      heroBg.style.transform = `scale(1.05) translateY(${scrollY * .15}px)`;
+    });
+
+    // ============================
+    // INITIAL
+    // ============================
+    renderMasonry('all');
+  </script>
+</body>
+</html>
