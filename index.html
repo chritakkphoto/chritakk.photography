@@ -604,6 +604,8 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
     }
+    .pricing-carousel { display: contents; } /* Desktop: normales Grid */
+    .pricing-arrow { display: none; }
     .price-card {
       background: rgba(255,255,255,.02);
       border: 1px solid rgba(255,255,255,.06);
@@ -869,8 +871,8 @@
       .section { padding: 4rem 0; }
       .section-title { font-size: clamp(1.8rem, 7vw, 2.5rem); }
       .section-desc { font-size: .9rem; }
-      .masonry { columns: 3; column-gap: .5rem; }
-      .masonry-item { margin-bottom: .5rem; border-radius: 8px; }
+      .masonry { columns: 3; column-gap: .4rem; }
+      .masonry-item { margin-bottom: .4rem; border-radius: 6px; }
       .filter-bar { gap: .3rem; }
       .filter-btn { font-size: .65rem; padding: .4rem .9rem; }
       .gallery-desc { font-size: .8rem; margin: -1rem auto 2rem; }
@@ -880,7 +882,19 @@
       .about-image .exp-badge { position: relative; bottom: auto; right: auto; margin-top: -1rem; }
       .about-text h3 { font-size: 1.5rem; }
       .about-text p { font-size: .9rem; }
-      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+      .pricing-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1rem; padding: .5rem 0 1rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .pricing-grid::-webkit-scrollbar { display: none; }
+      .price-card { flex: 0 0 85%; scroll-snap-align: center; max-width: 320px; margin: 0 auto; }
+      .pricing-carousel { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+      .pricing-carousel-nav { display: flex; gap: .8rem; align-items: center; margin-top: .5rem; }
+      .pricing-carousel-nav button {
+        background: none; border: 1px solid rgba(255,255,255,.1); color: var(--fg);
+        width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+        font-size: 1.2rem; transition: .3s; font-family: var(--font-sans);
+      }
+      .pricing-carousel-nav button:hover { border-color: var(--gold); color: var(--gold); background: rgba(212,168,83,.08); }
+      .pricing-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.1); border: none; cursor: pointer; transition: .3s; padding: 0; }
+      .pricing-dot.active { background: var(--gold); }
       .partner-logo { padding: 1.5rem 2rem; min-width: auto; width: 100%; }
       .testimonial-slide blockquote { font-size: 1.1rem; }
       .ig-strip { grid-template-columns: repeat(3,1fr); gap: .3rem; }
@@ -898,7 +912,7 @@
       .hero-badge { font-size: .6rem; }
       .scroll-hint { display: none; }
       .filter-btn { font-size: .6rem; padding: .3rem .7rem; }
-      .masonry { columns: 1; }
+      .masonry { columns: 2; }
       .stat-number { font-size: 1.8rem; }
       .stat-label { font-size: .65rem; }
       .price-card { padding: 1.5rem 1.2rem; }
@@ -1117,7 +1131,7 @@
       <h2 class="section-title reveal">Meine Pakete</h2>
       <p class="section-desc mx-auto reveal">Für jedes Budget und jedes Projekt das passende Angebot. Maßgeschneidert – ganz nach deinen Wünschen.</p>
 
-      <div class="pricing-grid reveal">
+      <div class="pricing-grid reveal" id="pricingGrid">
         <div class="price-card">
           <h4>Portrait / Tiere</h4>
           <div class="price">ab 129€</div>
@@ -1170,6 +1184,13 @@
             <li>Jedes weitere Bild +5€</li>
           </ul>
           <a href="#contact" class="btn btn-outline">Anfragen</a>
+        </div> 
+      </div>
+      <div class="pricing-carousel" id="pricingCarousel">
+        <div class="pricing-carousel-nav">
+          <button id="pricingPrev">&lsaquo;</button>
+          <div id="pricingDots"></div>
+          <button id="pricingNext">&rsaquo;</button>
         </div>
       </div>
     </div>
@@ -1613,6 +1634,57 @@
       lbImg.src = p.img;
       lbImg.alt = p.alt;
       lbCaption.textContent = p.alt;
+    }
+
+    // ============================
+    // PRICING CAROUSEL (nur mobil)
+    // ============================
+    const pricingGrid = document.getElementById('pricingGrid');
+    const pricingDots = document.getElementById('pricingDots');
+    const pricingPrev = document.getElementById('pricingPrev');
+    const pricingNext = document.getElementById('pricingNext');
+    const pricingCards = pricingGrid?.querySelectorAll('.price-card');
+    
+    if (pricingCards && pricingCards.length > 0 && pricingDots) {
+      // Dots generieren
+      pricingCards.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'pricing-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('data-idx', i);
+        dot.addEventListener('click', () => scrollToCard(i));
+        pricingDots.appendChild(dot);
+      });
+
+      function scrollToCard(idx) {
+        const card = pricingCards[idx];
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      }
+
+      pricingPrev?.addEventListener('click', () => {
+        const scrollLeft = pricingGrid.scrollLeft;
+        const cardWidth = pricingCards[0]?.offsetWidth || 300;
+        const newIdx = Math.max(0, Math.round(scrollLeft / (cardWidth + 16)) - 1);
+        scrollToCard(newIdx);
+      });
+
+      pricingNext?.addEventListener('click', () => {
+        const scrollLeft = pricingGrid.scrollLeft;
+        const cardWidth = pricingCards[0]?.offsetWidth || 300;
+        const newIdx = Math.min(pricingCards.length - 1, Math.round(scrollLeft / (cardWidth + 16)) + 1);
+        scrollToCard(newIdx);
+      });
+
+      // Dots aktualisieren beim Scrollen
+      pricingGrid.addEventListener('scroll', () => {
+        const scrollLeft = pricingGrid.scrollLeft;
+        const cardWidth = pricingCards[0]?.offsetWidth || 300;
+        const activeIdx = Math.round(scrollLeft / (cardWidth + 16));
+        pricingDots.querySelectorAll('.pricing-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === activeIdx);
+        });
+      });
     }
 
     // ============================
