@@ -207,7 +207,7 @@
     }
     .hero-bg {
       position: absolute; inset: 0;
-      background: url('https://res.cloudinary.com/l4zkxzps/image/upload/v1792063918/chritakk/IMG_5572.jpg') center/cover no-repeat;
+      background: url('https://res.cloudinary.com/l4zkxzps/image/upload/v1792063918/chritakk/IMG_5572.jpg') center 30%/cover no-repeat;
       transform: scale(1.05);
       transition: transform .2s var(--ease);
       will-change: transform;
@@ -604,7 +604,7 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
     }
-    .pricing-carousel { display: contents; } /* Desktop: normales Grid */
+    .pricing-carousel { display: none; } /* Desktop: normales Grid – Nav ausblenden */
     .pricing-arrow { display: none; }
     .price-card {
       background: rgba(255,255,255,.02);
