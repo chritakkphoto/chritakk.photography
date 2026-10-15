@@ -1792,7 +1792,8 @@
       try {
         const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
         if (res.ok) {
-          alert('✅ Danke für deine Nachricht! Ich melde mich so schnell wie möglich bei dir – versprochen 📸');
+          const name = form.querySelector('input[name="name"]').value || 'Christian';
+          alert(`✅ Danke für deine Nachricht, ${name}! Ich melde mich so schnell wie möglich bei dir – versprochen 📸`);
           form.reset();
         } else {
           alert('❌ Leider hat’s nicht geklappt. Bitte schreib mir direkt eine E-Mail an chritakk.photography@gmail.com');
