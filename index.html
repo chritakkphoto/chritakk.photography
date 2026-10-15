@@ -12,7 +12,6 @@
   <meta property="og:image" content="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063918/chritakk/IMG_5572.jpg" />
   <meta property="og:url" content="https://chritakk.photography" />
   <meta property="og:type" content="website" />
-  <meta name="google-site-verification" content="VERIFICATION_CODE" />
   <title>chritakk.photography | Christian Takkin</title>
   <!-- Schema.org – Strukturierte Daten für Google -->
   <script type="application/ld+json">
@@ -1323,13 +1322,17 @@
           </div>
         </div>
 
-        <form class="contact-form reveal-right" id="contactForm">
+        <form class="contact-form reveal-right" id="contactForm" action="https://formsubmit.co/chritakk.photography@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="📸 Neue Anfrage von chritakk.photography" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="true" />
+          <input type="text" name="_honey" style="display:none" />
           <div class="row">
-            <input type="text" placeholder="Dein Name" required />
-            <input type="email" placeholder="Deine E-Mail" required />
+            <input type="text" name="name" placeholder="Dein Name" required />
+            <input type="email" name="email" placeholder="Deine E-Mail" required />
           </div>
-          <input type="text" placeholder="Betreff" />
-          <textarea placeholder="Erzähl mir von deinem Projekt …" required></textarea>
+          <input type="text" name="betreff" placeholder="Betreff" />
+          <textarea name="nachricht" placeholder="Erzähl mir von deinem Projekt …" required></textarea>
           <button type="submit">Nachricht senden</button>
         </form>
       </div>
@@ -1779,10 +1782,26 @@
     // ============================
     // FORM
     // ============================
-    document.getElementById('contactForm').addEventListener('submit', e => {
+    document.getElementById('contactForm').addEventListener('submit', async e => {
       e.preventDefault();
-      alert('Danke für deine Nachricht, Christian! Ich melde mich so schnell wie möglich bei dir – versprochen 📸');
-      e.target.reset();
+      const form = e.target;
+      const btn = form.querySelector('button');
+      const original = btn.textContent;
+      btn.textContent = 'Wird gesendet …';
+      btn.disabled = true;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        if (res.ok) {
+          alert('✅ Danke für deine Nachricht! Ich melde mich so schnell wie möglich bei dir – versprochen 📸');
+          form.reset();
+        } else {
+          alert('❌ Leider hat’s nicht geklappt. Bitte schreib mir direkt eine E-Mail an chritakk.photography@gmail.com');
+        }
+      } catch {
+        alert('❌ Netzwerkfehler. Bitte schreib mir direkt an chritakk.photography@gmail.com');
+      }
+      btn.textContent = original;
+      btn.disabled = false;
     });
 
     // ============================
