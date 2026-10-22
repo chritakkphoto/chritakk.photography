@@ -964,6 +964,52 @@
     }
 
     /* ============================
+       MEDIA BANNER
+       ============================ */
+    .media-banner {
+      background: linear-gradient(135deg, rgba(212,168,83,.04) 0%, rgba(10,10,10,1) 100%);
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 4rem 0;
+    }
+    .media-banner-content {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+    .media-banner-icon {
+      font-size: 3rem;
+      line-height: 1;
+    }
+    .media-banner-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem,3vw,2rem);
+      font-weight: 400;
+      margin-bottom: .4rem;
+      line-height: 1.2;
+    }
+    .media-banner-title .gold { color: var(--gold); }
+    .media-banner-text p {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+    .media-banner-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    @media (max-width:860px) {
+      .media-banner-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+      }
+      .media-banner-icon { font-size: 2.2rem; }
+      .media-banner-btn { white-space: normal; }
+    }
+
+    /* ============================
        BACK TO TOP
        ============================ */
     #backToTop {
@@ -1047,6 +1093,21 @@
     <div class="scroll-hint">
       <span>Scroll</span>
       <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- CHRITAKK.MEDIA BANNER -->
+  <section class="section media-banner" id="mediaBanner">
+    <div class="container">
+      <div class="media-banner-content reveal">
+        <div class="media-banner-icon">📱</div>
+        <div class="media-banner-text">
+          <p class="section-label" style="margin-bottom:0;">FÜR UNTERNEHMEN</p>
+          <h2 class="media-banner-title">Dein Business. <span class="gold">Besser sichtbar.</span></h2>
+          <p>Social Media Content, Corporate Design &amp; KI-Beratung aus einer Hand.<br>Inklusive professioneller Fotografie.</p>
+        </div>
+        <a href="media.html" class="btn btn-primary media-banner-btn">→ chritakk<span style="color:var(--bg);">.media</span> entdecken</a>
+      </div>
     </div>
   </section>
 
