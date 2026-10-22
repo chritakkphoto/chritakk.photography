@@ -604,6 +604,21 @@
       .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
       .footer-bottom { flex-direction: column; gap: .5rem; text-align: center; }
     }
+    /* Imprint */
+    .imprint-wrap {
+      max-width: 700px; margin: 0 auto;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+    }
+    .imprint-wrap p { color: var(--muted); font-size: .95rem; line-height: 1.7; margin-bottom: .2rem; }
+    .imprint-wrap p strong { color: var(--fg); }
+    @media (max-width:768px) {
+      .imprint-wrap { padding: 1.5rem; }
+      .imprint-wrap p { font-size: .85rem; }
+    }
+
     @media (max-width:480px) {
       .usp-grid { grid-template-columns: 1fr; }
       .benefits-grid { grid-template-columns: 1fr; }
@@ -868,6 +883,7 @@
           <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">Instagram</a>
           <a href="https://www.linkedin.com/in/chritakk-photography/" target="_blank" rel="noopener">LinkedIn</a>
           <a href="mailto:chritakk.photography@gmail.com">E-Mail</a>
+          <a href="#imprint">Impressum</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -876,6 +892,26 @@
       </div>
     </div>
   </footer>
+
+  <!-- IMPRESSUM -->
+  <section class="section" id="imprint">
+    <div class="container">
+      <p class="section-label text-center reveal">Impressum</p>
+      <h2 class="section-title text-center reveal" style="margin-bottom:2.5rem;">Angaben gem&auml;&szlig; &sect; 5 TMG</h2>
+      <div class="imprint-wrap reveal">
+        <p><strong>Christian Takkin</strong></p>
+        <p>Fotografie</p>
+        <p>Geislmayrstra&szlig;e 6</p>
+        <p>85051 Ingolstadt</p>
+        <p><br>E-Mail: <a href="mailto:chritakk.photography@gmail.com">chritakk.photography@gmail.com</a></p>
+        <p>Instagram: <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">@chritakk.photography</a></p>
+        <p><br><strong>Verantwortlich f&uuml;r den Inhalt nach &sect; 55 Abs. 2 RStV:</strong></p>
+        <p>Christian Takkin, Geislmayrstra&szlig;e 6, 85051 Ingolstadt</p>
+        <p><br><strong>Haftungsausschluss:</strong></p>
+        <p>Trotz sorgf&auml;ltiger inhaltlicher Kontrolle &uuml;bernehmen wir keine Haftung f&uuml;r die Inhalte externer Links. F&uuml;r den Inhalt der verlinkten Seiten sind ausschlie&szlig;lich deren Betreiber verantwortlich.</p>
+      </div>
+    </div>
+  </section>
 
   <script>
     // LOADER
