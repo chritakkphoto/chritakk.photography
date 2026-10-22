@@ -1512,6 +1512,117 @@
       { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695855/chritakk/gspgydihfgodxqfur7e0.jpg', alt:'Foto 5148', h:1.5 },
       { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695856/chritakk/pxdnklskeurp9yye7pke.jpg', alt:'Foto 5269', h:1.5 },
     ];
+    // Alte Galerie aus der GitHub-Version c39d76f (92 Fotos)
+// Direkt NACH dem vorhandenen const photos = [...]; einfügen.
+const bisherigeFotos = `
+automotive 1792063819 DSC03082
+automotive 1792063821 DSC03099
+automotive 1792063824 DSC03199
+automotive 1792063825 DSC03246
+automotive 1792063827 DSC03287
+automotive 1792063829 DSC03297
+automotive 1792063831 DSC03514
+automotive 1792063832 DSC03586
+automotive 1792063834 DSC05367
+automotive 1792063836 DSC05380
+automotive 1792063838 DSC05399
+rollingshots 1792063839 DSC06360
+rollingshots 1792063841 DSC06434
+automotive 1792063843 DSC06657
+automotive 1792063844 DSC06660
+automotive 1792063846 DSC06735
+automotive 1792063847 DSC06767
+rollingshots 1792063849 DSC08487
+rollingshots 1792063851 DSC08603
+animals 1792063853 DSC08653
+animals 1792063855 DSC08654
+animals 1792063856 DSC08672
+animals 1792063858 IMG_0321
+animals 1792063860 IMG_0876
+animals 1792063862 IMG_1113
+newborn 1792063864 IMG_1173
+newborn 1792063865 IMG_1176
+newborn 1792063867 IMG_1177
+newborn 1792063868 IMG_1200
+newborn 1792063870 IMG_1201
+newborn 1792063872 IMG_1203
+newborn 1792063873 IMG_1206
+animals 1792063875 IMG_1583
+rollingshots 1792063877 IMG_1597
+automotive 1792063878 IMG_1603
+rollingshots 1792063880 IMG_1802
+animals 1792063882 IMG_2145
+animals 1792063884 IMG_2146
+animals 1792063886 IMG_2289
+animals 1792063887 IMG_2290
+animals 1792063889 IMG_3316
+animals 1792063890 IMG_3356
+animals 1792063892 IMG_3452
+animals 1792063894 IMG_3454
+animals 1792063896 IMG_3486
+animals 1792063897 IMG_3492
+automotive 1792063899 IMG_3817
+animals 1792063901 IMG_3850
+animals 1792063902 IMG_3859
+animals 1792063905 IMG_3868
+animals 1792063907 IMG_3869
+portrait 1792063908 IMG_4449
+rollingshots 1792063910 IMG_4901
+rollingshots 1792063912 IMG_4929
+automotive 1792063915 IMG_4949
+automotive 1792063920 IMG_5826
+automotive 1792063924 IMG_5829
+automotive 1792063926 IMG_5833
+portrait 1792063928 IMG_6037
+portrait 1792063930 IMG_7014
+automotive 1792063932 IMG_7461
+automotive 1792063934 IMG_7462
+automotive 1792063936 IMG_7463
+automotive 1792063938 IMG_7471
+automotive 1792063939 IMG_7475
+automotive 1792063941 IMG_7491
+automotive 1792063943 IMG_7622
+rollingshots 1792063944 IMG_7623
+automotive 1792063946 IMG_7625
+automotive 1792063949 IMG_7628
+automotive 1792063951 IMG_7630
+portrait 1792063954 IMG_7946
+animals 1792063956 IMG_8019
+animals 1792063958 IMG_8036
+animals 1792063960 IMG_8038
+animals 1792063962 IMG_8271
+animals 1792063964 IMG_8272
+animals 1792063966 IMG_8275
+animals 1792063967 IMG_8278
+automotive 1792063970 IMG_8768
+automotive 1792063972 IMG_8769
+automotive 1792063974 IMG_8771
+automotive 1792063976 IMG_8772
+automotive 1792063978 IMG_8776
+automotive 1792063980 IMG_8777
+automotive 1792063981 IMG_8780
+automotive 1792063984 IMG_8787
+automotive 1792063986 IMG_8789
+automotive 1792063988 IMG_8790
+automotive 1792063990 IMG_8800
+automotive 1792063993 IMG_8814
+automotive 1792063996 IMG_8816
+`.trim().split("\n").map(zeile => {
+  const [cat, version, datei] = zeile.trim().split(/\s+/);
+  const img = `https://res.cloudinary.com/l4zkxzps/image/upload/v${version}/chritakk/${datei}.jpg`;
+  const alt = cat === "rollingshots" ? "Rollingshots" :
+              cat === "portrait" ? "Portrait" :
+              `Foto ${Number(datei.match(/(\d+)$/)?.[1] || 0)}`;
+  return { cat, img, alt, h: 1.5 };
+});
+// Bereits vorhandene (neue) Fotos bleiben erhalten; keine Duplikate.
+const bekannteBildlinks = new Set(photos.map(foto => foto.img));
+for (const foto of bisherigeFotos) {
+  if (!bekannteBildlinks.has(foto.img)) {
+    photos.push(foto);
+    bekannteBildlinks.add(foto.img);
+  }
+}
 
     // ============================
     // LOADER
