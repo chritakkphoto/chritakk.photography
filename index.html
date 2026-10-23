@@ -1392,17 +1392,26 @@
           </div>
         </div>
 
-        <form class="contact-form reveal-right" id="contactForm" action="https://formsubmit.co/chritakk.photography@gmail.com" method="POST">
-          <input type="hidden" name="_subject" value="📸 Neue Anfrage von chritakk.photography" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_captcha" value="true" />
-          <input type="text" name="_honey" style="display:none" />
+        <form class="contact-form reveal-right" id="contactForm">
+          <input type="text" name="website" autocomplete="off" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px" />
           <div class="row">
-            <input type="text" name="name" placeholder="Dein Name" required />
-            <input type="email" name="email" placeholder="Deine E-Mail" required />
+            <input type="text" name="name" placeholder="Dein Name" required maxlength="130" />
+            <input type="email" name="email" placeholder="Deine E-Mail" required maxlength="180" />
           </div>
-          <input type="text" name="betreff" placeholder="Betreff" />
-          <textarea name="nachricht" placeholder="Erzähl mir von deinem Projekt …" required></textarea>
+          <input type="tel" name="phone" placeholder="Telefon (optional)" maxlength="45" />
+          <select name="shooting_type" required aria-label="Art der Anfrage" style="background:#171717;border:1px solid rgba(255,255,255,.08);padding:1rem 1.2rem;color:var(--fg);font:inherit;border-radius:var(--radius)">
+            <option value="" disabled selected>Art der Anfrage auswählen</option>
+            <option value="Portrait">Portrait</option><option value="Tiere">Tiere</option>
+            <option value="Automotive">Automotive</option><option value="Rollingshots">Rollingshots</option>
+            <option value="Events">Events</option><option value="Produkte">Produkte</option>
+            <option value="Newborn">Newborn</option><option value="Sonstiges">Sonstiges</option>
+          </select>
+          <textarea name="message" placeholder="Erzähl mir von deinem Projekt …" required minlength="5" maxlength="3000"></textarea>
+          <label style="font-size:.8rem;color:var(--muted);display:flex;gap:.6rem;align-items:flex-start">
+            <input type="checkbox" name="privacy_accepted" required style="width:auto;margin-top:.25rem" />
+            <span>Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung meiner Anfrage zu und habe die <a href="#imprint">Datenschutzhinweise</a> zur Kenntnis genommen.</span>
+          </label>
+          <p id="contactFeedback" role="status" aria-live="polite" style="font-size:.85rem"></p>
           <button type="submit">Nachricht senden</button>
         </form>
       </div>
@@ -1884,27 +1893,42 @@ for (const foto of bisherigeFotos) {
     // ============================
     // FORM
     // ============================
-    document.getElementById('contactForm').addEventListener('submit', async e => {
+    const ctpContactForm = document.getElementById('contactForm');
+    let ctpFormStartedAt = Date.now();
+    ctpContactForm.addEventListener('submit', async e => {
       e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button');
+      const form = e.currentTarget;
+      const btn = form.querySelector('button[type="submit"]');
+      const feedback = document.getElementById('contactFeedback');
       const original = btn.textContent;
       btn.textContent = 'Wird gesendet …';
       btn.disabled = true;
+      feedback.textContent = '';
+      const data = new FormData(form);
+      const payload = {
+        name: data.get('name'), email: data.get('email'), phone: data.get('phone'),
+        shooting_type: data.get('shooting_type'), message: data.get('message'),
+        privacy_accepted: data.get('privacy_accepted') === 'on',
+        website: data.get('website') || '', started_at: ctpFormStartedAt
+      };
       try {
-        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
-        if (res.ok) {
-          const name = form.querySelector('input[name="name"]').value || 'Christian';
-          alert(`✅ Danke für deine Nachricht, ${name}! Ich melde mich so schnell wie möglich bei dir – versprochen 📸`);
-          form.reset();
-        } else {
-          alert('❌ Leider hat’s nicht geklappt. Bitte schreib mir direkt eine E-Mail an chritakk.photography@gmail.com');
-        }
-      } catch {
-        alert('❌ Netzwerkfehler. Bitte schreib mir direkt an chritakk.photography@gmail.com');
+        const res = await fetch('https://ctp-studio-secure.pages.dev/_ctp/contact', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json().catch(() => ({}));
+        if (!res.ok || !result.ok) throw new Error(result.error || 'Anfrage konnte nicht gespeichert werden.');
+        feedback.textContent = '✓ Vielen Dank! Deine Anfrage wurde erfolgreich übermittelt.';
+        feedback.style.color = '#d4a853';
+        form.reset();
+        ctpFormStartedAt = Date.now();
+      } catch (error) {
+        feedback.textContent = 'Senden fehlgeschlagen: ' + error.message + ' Bitte alternativ an chritakk.photography@gmail.com schreiben.';
+        feedback.style.color = '#ff9999';
+      } finally {
+        btn.textContent = original;
+        btn.disabled = false;
       }
-      btn.textContent = original;
-      btn.disabled = false;
     });
 
     // ============================
