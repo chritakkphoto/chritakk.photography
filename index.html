@@ -1512,19 +1512,6 @@
       { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695855/chritakk/gspgydihfgodxqfur7e0.jpg', alt:'Foto 5148', h:1.5 },
       { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695856/chritakk/pxdnklskeurp9yye7pke.jpg', alt:'Foto 5269', h:1.5 },
     ];
-/* CTP_AUTO_GALERIE_V1: ergänzen, niemals überschreiben */
-try {
-  const ctpLive=JSON.parse(localStorage.getItem('ctp_public_live_photos_v1')||'[]');
-  if(Array.isArray(ctpLive)) {
-    const ctpKnown=new Set(photos.map(item=>item.img));
-    for(const p of ctpLive) {
-      if(p&&typeof p.img==='string'&&!ctpKnown.has(p.img)) {
-        photos.push(p); ctpKnown.add(p.img);
-      }
-    }
-  }
-}catch(ctpError){console.warn('CTP Galerie:',ctpError);}
-
     // Alte Galerie aus der GitHub-Version c39d76f (92 Fotos)
 // Direkt NACH dem vorhandenen const photos = [...]; einfügen.
 const bisherigeFotos = `
@@ -1940,24 +1927,44 @@ for (const foto of bisherigeFotos) {
     // INITIAL
     // ============================
     renderMasonry('all');
+
+    // CTP Studio 2.1: öffentliche Galerie live aus Cloudflare laden.
+    // Die bisherigen Fotos bleiben nur bei Verbindungsproblemen als Fallback sichtbar.
+    (async function loadCTPGallery() {
+      try {
+        const response = await fetch('https://ctp-studio-secure.pages.dev/_ctp/gallery', {
+          cache: 'no-store', mode: 'cors'
+        });
+        if (!response.ok) throw new Error('Galerie-API: HTTP ' + response.status);
+        const payload = await response.json();
+        if (!payload || !Array.isArray(payload.photos)) throw new Error('Unerwartetes Galerieformat');
+        const allowed = new Set(['published', 'public', 'visible', 'live', 'veroeffentlicht', 'veröffentlicht']);
+        const blocked = new Set(['draft', 'hidden', 'archived', 'entwurf', 'ausgeblendet', 'archiviert']);
+        const live = payload.photos.filter(p => {
+          if (!p || typeof p !== 'object') return false;
+          if (p.is_public === false || p.published === false || p.visible === false) return false;
+          const status = String(p.status || '').toLowerCase();
+          if (blocked.has(status)) return false;
+          if (status && !allowed.has(status)) return false;
+          return true;
+        }).map(p => ({
+          cat: String(p.cat || p.category || 'all').toLowerCase(),
+          img: p.img || p.url || p.image_url || p.secure_url,
+          alt: String(p.alt || p.title || p.caption || 'Fotografie'),
+          h: 1.5,
+          order: Number(p.sort_order ?? p.sortOrder ?? p.position ?? 0)
+        })).filter(p => typeof p.img === 'string' && /^https:\/\//i.test(p.img));
+        live.sort((a,b) => a.order - b.order);
+        // Bei erfolgreicher API-Antwort ist die Datenbank die einzige Quelle.
+        // Auch eine leere Liste ist gültig und darf nicht durch alte Fotos ersetzt werden.
+        photos.splice(0, photos.length, ...live);
+        const selected = document.querySelector('.filter-btn.active');
+        renderMasonry(selected ? selected.dataset.filter : 'all');
+      } catch (error) {
+        console.warn('CTP Studio Galerie nicht erreichbar; bisherige Galerie bleibt sichtbar:', error);
+      }
+    })();
   </script>
 
-<!-- CTP_AUTO_GALERIE_V1: aktuelle Galerie von CTP Studio nachladen -->
-<script>
-(function(){
-  var key='ctp_public_live_photos_v1';
-  var api='https://ctp-studio-secure.pages.dev/_ctp/gallery';
-  fetch(api,{cache:'no-store'}).then(function(r){if(!r.ok)throw Error('HTTP '+r.status);return r.json();}).then(function(data){
-    if(!data||!Array.isArray(data.photos))throw Error('Ungültiges Galerie-Format');
-    var next=JSON.stringify(data.photos);
-    var previous=localStorage.getItem(key)||'[]';
-    if(next!==previous){
-      localStorage.setItem(key,next);
-      // Einmalig neu laden, damit die vorhandene Galerie die zusätzlichen Fotos rendert.
-      location.reload();
-    }
-  }).catch(function(err){console.warn('CTP Zusatzgalerie derzeit nicht erreichbar:',err);});
-})();
-</script>
 </body>
 </html>
