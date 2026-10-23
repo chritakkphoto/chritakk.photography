@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FY5GLMKLYZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-FY5GLMKLYZ');
+  </script>
+  <meta name="description" content="Christian Takkin – Fotograf aus München/Ingolstadt. Events, Portrait, Tiere, Automotive, Rollingshots, Produkte und Newborn. Jetzt Termin anfragen!" />
+  <meta name="keywords" content="Fotograf, München, Ingolstadt, Christian Takkin, chritakk, Eventfotograf, Portraitfotograf, Rollingshots, Automotive Fotograf, Tierfotograf" />
+  <meta name="author" content="Christian Takkin" />
+  <!-- Open Graph (für Social Media & Google) -->
+  <meta property="og:title" content="chritakk.photography | Christian Takkin – Fotograf" />
+  <meta property="og:description" content="Momente, die für immer bleiben. Events, Portrait, Tiere, Automotive, Rollingshots & mehr." />
+  <meta property="og:image" content="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063918/chritakk/IMG_5572.jpg" />
+  <meta property="og:url" content="https://chritakk.photography" />
+  <meta property="og:type" content="website" />
+  <title>chritakk.photography | Christian Takkin</title>
+  <!-- Schema.org – Strukturierte Daten für Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "chritakk.photography – Christian Takkin",
+    "image": "https://res.cloudinary.com/l4zkxzps/image/upload/v1792063998/chritakk/IMG_8990.jpg",
+    "url": "https://chritakk.photography",
+    "email": "chritakk.photography@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Geislmayrstraße 6",
+      "postalCode": "85051",
+      "addressLocality": "Ingolstadt"
+    },
+    "priceRange": "99€ - 899€",
+    "description": "Fotografie für Events, Portrait, Tiere, Produkte, Automotive, Rollingshots und Newborn im Raum München & Ingolstadt.",
+    "areaServed": ["München", "Ingolstadt"],
+    "sameAs": [
+      "https://www.instagram.com/chritakk.photography/",
+      "https://www.linkedin.com/in/chritakk-photography/"
+    ]
+  }
+  </script>
+  <style>
+    /* ============================
+       RESET & BASE
+       ============================ */
+    *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0a;
+      --fg: #f0f0f0;
+      --muted: #666;
+      --gold: #d4a853;
+      --gold-dim: rgba(212,168,83,.15);
+      --glass: rgba(255,255,255,.04);
+      --glass-border: rgba(255,255,255,.06);
+      --radius: 12px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --ease: cubic-bezier(.25,.1,.25,1);
+    }
+
+    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    *::selection { background: var(--gold); color: var(--bg); }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.65;
+      overflow-x: hidden;
+      cursor: none;
+    }
+    a { color: var(--gold); text-decoration: none; transition: color .3s; }
+    a:hover { color: var(--fg); }
+    img { display: block; width: 100%; height: auto; }
+    .container { max-width: 1320px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ============================
+       CUSTOM CURSOR
+       ============================ */
+    .cursor-dot,
+    .cursor-ring {
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%,-50%);
+      transition: width .3s, height .3s, background .3s, border-color .3s;
+    }
+    .cursor-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+    .cursor-ring {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      transition: width .25s, height .25s, background .25s, border-color .25s, left .08s, top .08s;
+    }
+    .cursor-ring.hover {
+      width: 70px; height: 70px;
+      background: rgba(212,168,83,.08);
+      border-color: var(--gold);
+    }
+
+    @media (max-width:768px) {
+      body { cursor: auto; }
+      .cursor-dot,.cursor-ring { display: none; }
+    }
+
+    /* ============================
+       LOADER
+       ============================ */
+    .loader {
+      position: fixed; inset: 0; z-index: 99998;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      transition: opacity .8s ease, visibility .8s ease;
+    }
+    .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-ring {
+      width: 48px; height: 48px;
+      border: 2px solid rgba(212,168,83,.1);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .loader p {
+      margin-top: 1.5rem;
+      font-size: .8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--muted);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    /* ============================
+       PROGRESS BAR
+       ============================ */
+    #progressBar {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold), #f0d080);
+      z-index: 9999;
+      width: 0%;
+      transition: width .1s linear;
+    }
+
+    /* ============================
+       NAV
+       ============================ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      padding: 1.4rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background .5s, padding .3s, backdrop-filter .5s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,.78);
+      backdrop-filter: blur(18px) saturate(1.2);
+      padding: .9rem 2rem;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      color: var(--fg);
+    }
+    .logo span { color: var(--gold); }
+    .logo .tagline {
+      display: block;
+      font-size: .6rem;
+      font-family: var(--font-sans);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: -2px;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--fg);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      padding: 4px 0;
+      transition: color .3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width .4s var(--ease);
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--bg) !important;
+      padding: .5rem 1.4rem !important;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: transform .3s, box-shadow .3s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(212,168,83,.3);
+      color: var(--bg) !important;
+    }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 26px; height: 2px;
+      background: var(--fg); transition: .35s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ============================
+       HERO
+       ============================ */
+    .hero {
+      position: relative;
+      height: 100vh; min-height: 700px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://res.cloudinary.com/l4zkxzps/image/upload/v1792063918/chritakk/IMG_5572.jpg') center 30%/cover no-repeat;
+      transform: scale(1.05);
+      transition: transform .2s var(--ease);
+      will-change: transform;
+    }
+    .hero-gradient {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(10,10,10,.3) 0%, rgba(10,10,10,.85) 100%);
+    }
+    .hero-scrim {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 30%;
+      background: linear-gradient(transparent, var(--bg));
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; max-width: 900px; padding: 0 2rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: .7rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-dim);
+      padding: .4rem 1.4rem;
+      border-radius: 50px;
+      margin-bottom: 2rem;
+      opacity: 0; transform: translateY(20px);
+      animation: heroFade .8s .2s forwards;
+    }
+    .hero-content h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      font-weight: 400;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      opacity: 0; transform: translateY(40px);
+      animation: heroFade .9s .4s forwards;
+    }
+    .hero-content h1 .outline {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--fg);
+      text-stroke: 1px var(--fg);
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 600px; margin: 0 auto 2.5rem;
+      letter-spacing: 1px;
+      opacity: 0; transform: translateY(30px);
+      animation: heroFade .9s .6s forwards;
+    }
+    .hero-content p span { color: var(--fg); }
+
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      opacity: 0; transform: translateY(30px);
+      animation: heroFade .9s .8s forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .9rem 2.2rem;
+      font-size: .82rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 2px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s, background .3s, color .3s;
+      font-family: var(--font-sans);
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(212,168,83,.3);
+      color: var(--bg);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.2);
+      color: var(--fg);
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .scroll-hint {
+      position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+      z-index: 3;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; color: var(--muted); font-size: .65rem; letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: heroFade 1s 1.2s forwards;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(var(--gold), transparent);
+      animation: scrollLine 2s infinite;
+    }
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: top; opacity: 0; }
+    }
+    @keyframes heroFade { to { opacity: 1; transform: translateY(0); } }
+
+    /* ============================
+       SECTION GLUE
+       ============================ */
+    .section { padding: 7rem 0; position: relative; }
+    .section-label {
+      font-size: .7rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .5rem;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem,5vw,3.5rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .section-desc {
+      color: var(--muted);
+      max-width: 600px;
+      font-size: 1rem;
+      margin-bottom: 3.5rem;
+    }
+    .text-center { text-align: center; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+
+    /* ============================
+       REVEAL ANIMATION
+       ============================ */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0; transform: translateX(-50px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0; transform: translateX(50px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-scale {
+      opacity: 0; transform: scale(.92);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+    /* ============================
+       GALLERY (MASONRY)
+       ============================ */
+    .filter-bar {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: .5rem; margin-bottom: 3rem;
+    }
+    .filter-btn {
+      background: none; border: 1px solid rgba(255,255,255,.08);
+      color: var(--muted);
+      padding: .55rem 1.3rem;
+      font-size: .72rem; text-transform: uppercase; letter-spacing: 2px;
+      cursor: pointer; border-radius: 50px;
+      transition: .3s; font-family: var(--font-sans);
+    }
+    .filter-btn:hover { border-color: rgba(212,168,83,.3); color: var(--gold); }
+    .filter-btn.active {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .masonry {
+      columns: 3; column-gap: 1rem;
+    }
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      cursor: pointer;
+      background: rgba(255,255,255,.03);
+    }
+    .masonry-item img {
+      width: 100%; height: auto;
+      display: block;
+      transition: transform .7s var(--ease);
+    }
+    .masonry-item:hover img { transform: scale(1.06); }
+
+    .masonry-item .overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 60%);
+      display: flex; align-items: flex-end; padding: 1.5rem;
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .masonry-item:hover .overlay { opacity: 1; }
+    .masonry-item .overlay span {
+      color: var(--fg);
+      font-size: .75rem; letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    .masonry-item.hidden { display: none; }
+
+    @media (max-width:900px) { .masonry { columns: 2; column-gap: .8rem; } }
+    @media (max-width:560px) { .masonry { columns: 2; column-gap: 6px; } }
+
+    /* Galerie-Beschreibung */
+    .gallery-desc {
+      max-width: 650px; margin: -2rem auto 3rem;
+      color: var(--muted); font-size: .92rem; line-height: 1.7;
+      transition: opacity .3s;
+    }
+
+    /* ============================
+       LIGHTBOX
+       ============================ */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,.94);
+      display: none; align-items: center; justify-content: center;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 88vw; max-height: 88vh;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 20px 80px rgba(0,0,0,.6);
+      animation: lbIn .4s var(--ease);
+    }
+    @keyframes lbIn { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+    .lightbox .close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      font-size: 2.4rem; color: var(--fg);
+      background: none; border: none; cursor: pointer;
+      opacity: .4; transition: .3s;
+    }
+    .lightbox .close:hover { opacity: 1; }
+    .lightbox .lb-nav {
+      position: absolute; top: 50%; left: 0; right: 0;
+      transform: translateY(-50%);
+      display: flex; justify-content: space-between;
+      padding: 0 1rem; pointer-events: none;
+    }
+    .lightbox .lb-nav button {
+      pointer-events: all;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--fg);
+      font-size: 1.6rem;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: .3s;
+    }
+    .lightbox .lb-nav button:hover { background: rgba(255,255,255,.15); }
+    .lightbox .lb-caption {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: var(--muted); font-size: .85rem; letter-spacing: 2px;
+      background: rgba(0,0,0,.6); padding: .5rem 1.5rem;
+      border-radius: 50px;
+      backdrop-filter: blur(8px);
+    }
+
+    /* ============================
+       STATS
+       ============================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 2rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      padding: 4rem 0;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: var(--font-serif);
+      font-size: 3rem; color: var(--gold);
+      line-height: 1;
+      margin-bottom: .4rem;
+    }
+    .stat-label {
+      font-size: .75rem; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--muted);
+    }
+
+    /* ============================
+       ABOUT
+       ============================ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .about-image {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .about-image img {
+      width: 100%; aspect-ratio: 3/4;
+      object-fit: cover;
+      border-radius: var(--radius);
+    }
+    .about-image::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: var(--radius);
+      box-shadow: inset 0 0 60px rgba(0,0,0,.4);
+    }
+    .about-image .exp-badge {
+      position: absolute; bottom: -1rem; right: -1rem;
+      background: var(--gold);
+      color: var(--bg);
+      padding: 1.2rem 1.8rem;
+      border-radius: var(--radius);
+      text-align: center;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+    .about-image .exp-badge span { display: block; font-size: 2rem; font-family: var(--font-serif); }
+
+    .about-text h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem; font-weight: 400;
+      margin-bottom: 1.2rem;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: .95rem; }
+    .about-tags {
+      display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 2rem;
+    }
+    .about-tags span {
+      border: 1px solid rgba(255,255,255,.08);
+      padding: .4rem 1rem;
+      font-size: .7rem; text-transform: uppercase; letter-spacing: 2px;
+      color: var(--muted); border-radius: 50px;
+      transition: .3s;
+    }
+    .about-tags span:hover { border-color: var(--gold); color: var(--gold); }
+
+    @media (max-width:860px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-image .exp-badge { right: 0; }
+    }
+
+    /* Partner */
+    .partner-wrap {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 1rem;
+    }
+    .partner-logo {
+      display: inline-flex; flex-direction: column; align-items: center; gap: .3rem;
+      padding: 2rem 3rem;
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      transition: border-color .4s, transform .4s, box-shadow .4s;
+      min-width: 200px;
+    }
+    .partner-logo:hover {
+      border-color: rgba(212,168,83,.3);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    }
+    .partner-name {
+      font-family: var(--font-serif);
+      font-size: 1.6rem; color: var(--fg);
+      letter-spacing: 1px;
+    }
+    .partner-name span { color: var(--gold); }
+    .partner-label {
+      font-size: .7rem; text-transform: uppercase; letter-spacing: 3px;
+      color: var(--muted);
+    }
+
+    /* ============================
+       PRICING
+       ============================ */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .pricing-carousel { display: none; } /* Desktop: normales Grid – Nav ausblenden */
+    .pricing-arrow { display: none; }
+    .price-card {
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      transition: transform .4s, border-color .4s, box-shadow .4s;
+      position: relative;
+    }
+    .price-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212,168,83,.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    }
+    .price-card.featured {
+      border-color: var(--gold);
+      background: rgba(212,168,83,.04);
+    }
+    .price-card.featured .badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: var(--bg);
+      font-size: .65rem; text-transform: uppercase; letter-spacing: 2px;
+      padding: .3rem 1.2rem; border-radius: 50px;
+      font-weight: 600;
+    }
+    .price-card h4 {
+      font-family: var(--font-serif);
+      font-size: 1.4rem; font-weight: 400;
+      margin-bottom: .3rem;
+    }
+    .price-card .price {
+      font-size: 2.2rem; font-family: var(--font-serif);
+      color: var(--gold); margin: 1rem 0;
+    }
+    .price-card .price small {
+      font-size: .8rem; font-family: var(--font-sans);
+      color: var(--muted);
+    }
+    .price-card ul {
+      list-style: none; margin: 1.5rem 0;
+    }
+    .price-card ul li {
+      padding: .4rem 0; font-size: .85rem;
+      color: var(--muted);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .price-card ul li::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .price-card .btn {
+      width: 100%; justify-content: center;
+      margin-top: .5rem;
+    }
+
+    /* ============================
+       TESTIMONIALS
+       ============================ */
+    .testimonials {
+      background: rgba(255,255,255,.015);
+      border-top: 1px solid rgba(255,255,255,.04);
+      border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+    .testimonial-slider {
+      max-width: 700px; margin: 0 auto;
+      position: relative; min-height: 200px;
+    }
+    .testimonial-slide {
+      display: none;
+      text-align: center;
+      animation: fadeSlide .5s ease;
+    }
+    .testimonial-slide.active { display: block; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .testimonial-slide blockquote {
+      font-family: var(--font-serif);
+      font-size: 1.4rem; font-style: italic;
+      line-height: 1.6; color: var(--fg);
+      margin-bottom: 1.5rem;
+    }
+    .testimonial-slide cite {
+      font-style: normal; color: var(--muted);
+      font-size: .85rem; letter-spacing: 1px;
+    }
+    .testimonial-slide cite strong { color: var(--gold); }
+    .testimonial-dots {
+      display: flex; justify-content: center; gap: .6rem; margin-top: 2rem;
+    }
+    .testimonial-dots button {
+      width: 10px; height: 10px;
+      border: 1px solid var(--muted); border-radius: 50%;
+      background: transparent; cursor: pointer; transition: .3s;
+    }
+    .testimonial-dots button.active { background: var(--gold); border-color: var(--gold); }
+
+    /* ============================
+       INSTAGRAM STRIP
+       ============================ */
+    .ig-strip {
+      display: grid;
+      grid-template-columns: repeat(6,1fr);
+      gap: .5rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .ig-strip a {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .ig-strip a img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s;
+    }
+    .ig-strip a:hover img { transform: scale(1.1); }
+    .ig-strip a .ig-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: .3s;
+      font-size: 1.5rem;
+    }
+    .ig-strip a:hover .ig-overlay { opacity: 1; }
+
+    /* ============================
+       CONTACT
+       ============================ */
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .contact-info h3 {
+      font-family: var(--font-serif);
+      font-size: 2rem; font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .contact-info p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-info .detail {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .contact-info .detail .icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .contact-info .detail a { color: var(--fg); }
+    .contact-info .detail a:hover { color: var(--gold); }
+
+    .contact-form {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .contact-form .row { display: flex; gap: 1rem; }
+    .contact-form .row input { flex: 1; }
+    .contact-form input,
+    .contact-form textarea {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 1rem 1.2rem;
+      color: var(--fg);
+      font-family: var(--font-sans);
+      font-size: .9rem;
+      border-radius: var(--radius);
+      transition: border .3s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(255,255,255,.06);
+    }
+    .contact-form textarea {
+      min-height: 140px; resize: vertical;
+    }
+    .contact-form button {
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: .9rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 2px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s;
+      font-family: var(--font-sans);
+      align-self: flex-start;
+    }
+    .contact-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(212,168,83,.3);
+    }
+
+    /* ============================
+       FOOTER
+       ============================ */
+    footer {
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 4rem 0 2rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo { font-size: 1.6rem; }
+    .footer-brand p { color: var(--muted); font-size: .9rem; margin-top: 1rem; max-width: 300px; }
+    .footer-col h5 {
+      font-size: .75rem; text-transform: uppercase; letter-spacing: 2px;
+      color: var(--fg); margin-bottom: 1.2rem;
+    }
+    .footer-col a {
+      display: block; color: var(--muted); font-size: .9rem;
+      margin-bottom: .6rem; transition: color .3s;
+    }
+    .footer-col a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.04);
+      padding-top: 2rem;
+      display: flex; justify-content: space-between;
+      font-size: .8rem; color: var(--muted);
+    }
+
+    /* Impressum */
+    .imprint-wrap {
+      max-width: 700px; margin: 0 auto;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+    }
+    .imprint-wrap p { color: var(--muted); font-size: .95rem; line-height: 1.7; margin-bottom: .2rem; }
+    .imprint-wrap p strong { color: var(--fg); }
+
+    /* ============================
+       MOBILE OPTIMIERUNG
+       ============================ */
+    @media (max-width:768px) {
+      .container { padding: 0 1.2rem; }
+      nav { padding: .8rem 1.2rem; }
+      .nav-links {
+        position: fixed; top: 0; right: -100%; width: 80%; max-width: 320px; height: 100dvh;
+        background: rgba(10,10,10,.97);
+        backdrop-filter: blur(20px);
+        display: flex; flex-direction: column; justify-content: center; gap: 2rem;
+        padding: 2rem; transition: right .4s var(--ease);
+        border-left: 1px solid var(--glass-border);
+        z-index: 998;
+      }
+      .nav-links.open { right: 0; }
+      .nav-links a { font-size: 1.1rem; letter-spacing: 3px; }
+      .hamburger { display: flex; z-index: 999; }
+      .hero { min-height: 100dvh; }
+      .hero-content h1 { font-size: clamp(2rem, 12vw, 3.5rem); }
+      .hero-content p { font-size: .9rem; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .hero-actions .btn { width: 100%; max-width: 300px; justify-content: center; }
+      .section { padding: 4rem 0; }
+      .section-title { font-size: clamp(1.8rem, 7vw, 2.5rem); }
+      .section-desc { font-size: .9rem; }
+      .masonry { columns: 3; column-gap: .4rem; }
+      .masonry-item { margin-bottom: .4rem; border-radius: 6px; }
+      .filter-bar { gap: .3rem; }
+      .filter-btn { font-size: .65rem; padding: .4rem .9rem; }
+      .gallery-desc { font-size: .8rem; margin: -1rem auto 2rem; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); gap: 1.5rem; padding: 2.5rem 0; }
+      .stat-number { font-size: 2.2rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-image .exp-badge { position: relative; bottom: auto; right: auto; margin-top: -1rem; }
+      .about-text h3 { font-size: 1.5rem; }
+      .about-text p { font-size: .9rem; }
+      .pricing-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1rem; padding: .5rem 0 1rem; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .pricing-grid::-webkit-scrollbar { display: none; }
+      .price-card { flex: 0 0 85%; scroll-snap-align: center; max-width: 320px; margin: 0 auto; }
+      .pricing-carousel { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+      .pricing-carousel-nav { display: flex; gap: .8rem; align-items: center; margin-top: .5rem; }
+      .pricing-carousel-nav button {
+        background: none; border: 1px solid rgba(255,255,255,.1); color: var(--fg);
+        width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+        font-size: 1.2rem; transition: .3s; font-family: var(--font-sans);
+      }
+      .pricing-carousel-nav button:hover { border-color: var(--gold); color: var(--gold); background: rgba(212,168,83,.08); }
+      .pricing-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.1); border: none; cursor: pointer; transition: .3s; padding: 0; }
+      .pricing-dot.active { background: var(--gold); }
+      .partner-logo { padding: 1.5rem 2rem; min-width: auto; width: 100%; }
+      .testimonial-slide blockquote { font-size: 1.1rem; }
+      .ig-strip { grid-template-columns: repeat(3,1fr); gap: .3rem; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-form .row { flex-direction: column; }
+      .contact-form button { width: 100%; justify-content: center; }
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .footer-bottom { flex-direction: column; gap: .5rem; text-align: center; }
+      .imprint-wrap { padding: 1.5rem; }
+      .imprint-wrap p { font-size: .85rem; }
+    }
+
+    @media (max-width:480px) {
+      .hero-content h1 { font-size: clamp(1.8rem, 14vw, 2.5rem); }
+      .hero-badge { font-size: .6rem; }
+      .scroll-hint { display: none; }
+      .filter-btn { font-size: .6rem; padding: .3rem .7rem; }
+      .masonry { columns: 2; }
+      .stat-number { font-size: 1.8rem; }
+      .stat-label { font-size: .65rem; }
+      .price-card { padding: 1.5rem 1.2rem; }
+      .testimonial-slide blockquote { font-size: 1rem; }
+      .ig-strip { grid-template-columns: repeat(2,1fr); }
+      .footer-grid { text-align: center; }
+      .footer-brand p { max-width: 100%; }
+    }
+
+    /* ============================
+       MEDIA BANNER
+       ============================ */
+    .media-banner {
+      background: linear-gradient(135deg, rgba(212,168,83,.04) 0%, rgba(10,10,10,1) 100%);
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 4rem 0;
+    }
+    .media-banner-content {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+    .media-banner-icon {
+      font-size: 3rem;
+      line-height: 1;
+    }
+    .media-banner-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem,3vw,2rem);
+      font-weight: 400;
+      margin-bottom: .4rem;
+      line-height: 1.2;
+    }
+    .media-banner-title .gold { color: var(--gold); }
+    .media-banner-text p {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+    .media-banner-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    @media (max-width:860px) {
+      .media-banner-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+      }
+      .media-banner-icon { font-size: 2.2rem; }
+      .media-banner-btn { white-space: normal; }
+    }
+
+    /* ============================
+       BACK TO TOP
+       ============================ */
+    #backToTop {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 800;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--bg);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      opacity: 0; visibility: hidden;
+      transform: translateY(20px);
+      transition: opacity .4s, transform .4s, box-shadow .3s;
+      box-shadow: 0 4px 20px rgba(212,168,83,.2);
+    }
+    #backToTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    #backToTop:hover { box-shadow: 0 6px 30px rgba(212,168,83,.4); transform: translateY(-3px); }
+  </style>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-ring"></div>
+    <p>chritakk.photography</p>
+  </div>
+
+  <!-- CUSTOM CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- PROGRESS BAR -->
+  <div id="progressBar"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="logo">
+      chritakk<span>.photography</span>
+      <span class="tagline">Christian Takkin · Fotograf</span>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#gallery">Galerie</a></li>
+      <li><a href="#about">Über mich</a></li>
+      <li><a href="#pricing">Leistungen</a></li>
+      <li><a href="media.html">chritakk.media</a></li>
+      <li><a href="#contact" class="nav-cta">Kontakt</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-scrim"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">Fotografie mit Herz &amp; am Limit</div>
+      <h1>
+        Momente, die<br>
+        <span class="outline">für immer bleiben</span>
+      </h1>
+      <p>
+        <span>Events · Portrait · Tiere · Produkte · Automotive · Rollingshots · Newborn</span><br>
+        – ich halte fest, was dir wichtig ist.
+      </p>
+      <div class="hero-actions">
+        <a href="#gallery" class="btn btn-primary">Galerie entdecken</a>
+        <a href="#contact" class="btn btn-outline">Anfrage senden</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- CHRITAKK.MEDIA BANNER -->
+  <section class="section media-banner" id="mediaBanner">
+    <div class="container">
+      <div class="media-banner-content reveal">
+        <div class="media-banner-icon">📱</div>
+        <div class="media-banner-text">
+          <p class="section-label" style="margin-bottom:0;">FÜR UNTERNEHMEN</p>
+          <h2 class="media-banner-title">Dein Business. <span class="gold">Besser sichtbar.</span></h2>
+          <p>Social Media Content, Corporate Design &amp; KI-Beratung aus einer Hand.<br>Inklusive professioneller Fotografie.</p>
+        </div>
+        <a href="media.html" class="btn btn-primary media-banner-btn">→ chritakk<span style="color:var(--bg);">.media</span> entdecken</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section" id="gallery">
+    <div class="container text-center">
+      <p class="section-label reveal">Galerie</p>
+      <h2 class="section-title reveal">Meine Arbeiten</h2>
+      <p class="section-desc mx-auto reveal">Jede Kategorie erzählt ihre eigene Geschichte. Entdecke meine Welt durch die Linse.</p>
+
+      <div class="filter-bar reveal" id="filterBar">
+        <button class="filter-btn active" data-filter="all">Alle</button>
+        <button class="filter-btn" data-filter="events">Events</button>
+        <button class="filter-btn" data-filter="portrait">Portrait</button>
+        <button class="filter-btn" data-filter="animals">Tiere</button>
+        <button class="filter-btn" data-filter="product">Produkte</button>
+        <button class="filter-btn" data-filter="automotive">Automotive</button>
+        <button class="filter-btn" data-filter="rollingshots">Rollingshots</button>
+        <button class="filter-btn" data-filter="newborn">Newborn</button>
+      </div>
+
+      <p class="gallery-desc" id="galleryDesc">All meine Arbeiten – Events, Portrait, Tiere, Produkte, Automotive, Rollingshots und Newborn.</p>
+
+      <div class="masonry" id="masonryGrid"></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="section" style="padding-top:0;">
+    <div class="container reveal">
+      <div class="stats-grid">
+        <div class="stat-item"><div class="stat-number" data-count="60" data-suffix="+">0</div><div class="stat-label">Shootings</div></div>
+        <div class="stat-item"><div class="stat-number" data-count="4" data-suffix="+">0</div><div class="stat-label">Jahre Erfahrung</div></div>
+        <div class="stat-item"><div class="stat-number" data-count="100" data-suffix="%">0</div><div class="stat-label">Zufriedene Kunden</div></div>
+        <div class="stat-item"><div class="stat-number" data-count="8">0</div><div class="stat-label">Genres</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image reveal-left">
+          <img
+            src="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063998/chritakk/IMG_8990.jpg"
+            alt="Christian Takkin – Fotograf"
+          />
+          <div class="exp-badge"><span>4+</span> Jahre</div>
+        </div>
+        <div class="about-text reveal-right">
+          <p class="section-label">Über mich</p>
+          <h3>Christian Takkin –<br>Geschichten durch die Linse</h3>
+          <p>
+            Hey, ich bin <strong>Christian</strong>! Fotograf aus dem Raum München,
+            Wirtschaftsingenieurwesen-Student in Ingolstadt und leidenschaftlich
+            gerne mit meiner Kamera unterwegs.
+          </p>
+          <p>
+            Aufgewachsen in der Nähe von München, hat mich die Fotografie schon
+            früh begeistert. Was zunächst als Hobby begann, entwickelte sich über
+            die vergangenen Jahre zu einer echten Leidenschaft und schließlich zu
+            meiner eigenen nebenberuflichen Selbstständigkeit.
+          </p>
+          <p>
+            Neben meinem Studium an der Technischen Hochschule Ingolstadt liebe
+            ich es, kreativ zu sein, neue Menschen kennenzulernen und besondere
+            Augenblicke mit meiner Kamera festzuhalten. Dabei fasziniert mich
+            vor allem die Vielseitigkeit der Fotografie.
+          </p>
+          <p>
+            Ob die Dynamik eines Sportwagens, die Emotionen eines besonderen
+            Events, natürliche Portraits oder die ersten kostbaren Momente mit
+            einem Neugeborenen – jedes Shooting erzählt seine ganz eigene
+            Geschichte.
+          </p>
+          <p>
+            Durch meine Begeisterung für Automobile, Motorsport und Technik
+            habe ich besonders zur Automotive-Fotografie eine enge Verbindung.
+            Gleichzeitig liebe ich es, Menschen und ihre Geschichten authentisch
+            in Szene zu setzen.
+          </p>
+          <p>
+            <strong>Was mir dabei besonders wichtig ist?</strong> Eine entspannte
+            Atmosphäre, echte Emotionen und Bilder, die nicht gestellt wirken,
+            sondern Persönlichkeit zeigen.
+          </p>
+          <p>
+            Für mich bedeutet Fotografie mehr, als nur den Auslöser zu drücken.
+            Es geht darum, Erinnerungen zu schaffen, Details sichtbar zu machen
+            und Momente festzuhalten, die auch Jahre später noch etwas in uns
+            auslösen.
+          </p>
+          <p>
+            <strong>Denn am Ende sind es nicht einfach nur Bilder – es sind
+            Erinnerungen, die bleiben.</strong>
+          </p>
+          <div class="about-tags">
+            <span>Events</span><span>Portrait</span><span>Tiere</span>
+            <span>Produkte</span><span>Automotive</span><span>Rollingshots</span><span>Newborn</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNER -->
+  <section class="section" style="padding-top:0;">
+    <div class="container text-center reveal">
+      <p class="section-label">Partner &amp; Kooperationen</p>
+      <div class="partner-wrap">
+        <a href="https://www.kickdown.de" target="_blank" rel="noopener" class="partner-logo">
+          <span class="partner-name">Kickdown<span>.de</span></span>
+          <span class="partner-label">Automotive-Partner</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="pricing">
+    <div class="container text-center">
+      <p class="section-label reveal">Leistungen</p>
+      <h2 class="section-title reveal">Meine Pakete</h2>
+      <p class="section-desc mx-auto reveal">Für jedes Budget und jedes Projekt das passende Angebot. Maßgeschneidert – ganz nach deinen Wünschen.</p>
+
+      <div class="pricing-grid reveal" id="pricingGrid">
+        <div class="price-card">
+          <h4>Portrait / Tiere</h4>
+          <div class="price">ab 129€</div>
+          <ul>
+            <li>Ca. 30 Min. Shooting</li>
+            <li>Outdoor oder Location</li>
+            <li>30–50 digital bearbeitete Bilder</li>
+            <li>Online-Galerie zum Teilen</li>
+            <li>Jedes weitere Bild +5€</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Anfragen</a>
+        </div>
+
+        <div class="price-card">
+          <h4>Automotive / Produkt</h4>
+          <div class="price">ab 149€</div>
+          <ul>
+            <li>1–2 Stunden Shooting</li>
+            <li>Outdoor &amp; Location-Aufnahmen</li>
+            <li>30–50 digital bearbeitete Bilder</li>
+            <li>Gewerbliche Nutzung inklusive</li>
+            <li>Jedes weitere Bild +5€</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Anfragen</a>
+        </div>
+
+        <div class="price-card featured">
+          <div class="badge">Beliebt</div>
+          <h4>Rollingshots</h4>
+          <div class="price">ab 99€</div>
+          <ul>
+            <li>Ca. 30 Min. on the road</li>
+            <li>Dynamische Fahraufnahmen</li>
+            <li>10+ digital bearbeitete Bilder</li>
+            <li>Online-Galerie zum Teilen</li>
+            <li>Jedes weitere Bild +5€</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Anfragen</a>
+        </div>
+
+        <div class="price-card">
+          <h4>Events</h4>
+          <div class="price">ab 899€</div>
+          <ul>
+            <li>6 Stunden Begleitung</li>
+            <li>2. Location / Vorbereitung</li>
+            <li>150+ digital bearbeitete Bilder</li>
+            <li>Online-Galerie &amp; USB-Stick</li>
+            <li>Vorschaugalerie nach 48h</li>
+            <li>Jedes weitere Bild +5€</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Anfragen</a>
+        </div> 
+      </div>
+      <div class="pricing-carousel" id="pricingCarousel">
+        <div class="pricing-carousel-nav">
+          <button id="pricingPrev">&lsaquo;</button>
+          <div id="pricingDots"></div>
+          <button id="pricingNext">&rsaquo;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section testimonials">
+    <div class="container text-center">
+      <p class="section-label reveal">Kundenstimmen</p>
+      <h2 class="section-title reveal">Das sagen meine Kunden</h2>
+
+      <div class="testimonial-slider reveal">
+        <div class="testimonial-slide active">
+          <blockquote>„Wow, einfach nur wow! Mega schnelle Bearbeitung und das Ergebnis ist der Hammer. Die Bilder haben alle unsere Erwartungen übertroffen!"</blockquote>
+          <cite>Automotive</cite>
+        </div>
+        <div class="testimonial-slide">
+          <blockquote>„Sehr sympatischer Fotograf, sensationelle Arbeit! Die Fotos sind genau das, was wir uns vorgestellt haben – und noch viel besser. Absolute Empfehlung!"</blockquote>
+          <cite>Events &amp; Portrait</cite>
+        </div>
+        <div class="testimonial-slide">
+          <blockquote>„Die Bilder haben alle unsere Erwartungen übertroffen. Christian hat ein unglaubliches Gespür für den richtigen Moment und das perfekte Licht. Wir kommen gerne wieder!"</blockquote>
+          <cite>Portrait</cite>
+        </div>
+        <div class="testimonial-slide">
+          <blockquote>„Schnell, professionell und mit einer Leidenschaft dabei, die man in jedem Bild spürt. Christian hat unsere Produkte perfekt in Szene gesetzt!"</blockquote>
+          <cite>Produktfotografie · Kooperation</cite>
+        </div>
+      </div>
+      <div class="testimonial-dots">
+        <button class="active" data-slide="0"></button>
+        <button data-slide="1"></button>
+        <button data-slide="2"></button>
+        <button data-slide="3"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTAGRAM STRIP -->
+  <section class="section">
+    <div class="container text-center">
+      <p class="section-label reveal">Instagram</p>
+      <h2 class="section-title reveal" style="margin-bottom:3rem;">
+        Folge mir auf <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener" style="color:var(--gold);">@chritakk.photography</a>
+      </h2>
+
+      <div class="ig-strip reveal">
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063819/chritakk/DSC03082.jpg" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063918/chritakk/IMG_5572.jpg" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063856/chritakk/DSC08672.jpg" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063849/chritakk/DSC08487.jpg" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063998/chritakk/IMG_8990.jpg" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+        <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">
+          <img src="https://res.cloudinary.com/l4zkxzps/image/upload/v1792063972/chritakk/IMG_8769.jpg" alt="" loading="lazy" />
+          <div class="ig-overlay">&#64;</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="contact-wrap">
+        <div class="contact-info reveal-left">
+          <p class="section-label">Kontakt</p>
+          <h3>Lass uns <span style="color:var(--gold);">arbeiten</span></h3>
+          <p>Du hast ein Projekt im Kopf oder möchtest einfach mal unverbindlich plaudern? Schreib mir – ich freue mich auf dich!</p>
+
+          <div class="detail">
+            <div class="icon">&#9993;</div>
+            <a href="mailto:chritakk.photography@gmail.com">chritakk.photography@gmail.com</a>
+          </div>
+          <div class="detail">
+            <div class="icon">&#64;</div>
+            <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">@chritakk.photography</a>
+          </div>
+          <div class="detail">
+            <div class="icon">&#9679;</div>
+            <a href="https://www.linkedin.com/in/chritakk-photography/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+        </div>
+
+        <form class="contact-form reveal-right" id="contactForm" action="https://formsubmit.co/chritakk.photography@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="📸 Neue Anfrage von chritakk.photography" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="true" />
+          <input type="text" name="_honey" style="display:none" />
+          <div class="row">
+            <input type="text" name="name" placeholder="Dein Name" required />
+            <input type="email" name="email" placeholder="Deine E-Mail" required />
+          </div>
+          <input type="text" name="betreff" placeholder="Betreff" />
+          <textarea name="nachricht" placeholder="Erzähl mir von deinem Projekt …" required></textarea>
+          <button type="submit">Nachricht senden</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">chritakk<span>.photography</span></div>
+          <p>Momente einfangen, Geschichten erzählen – das ist meine Leidenschaft. Christian Takkin, Fotograf aus Leidenschaft.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="#gallery">Galerie</a>
+          <a href="#about">Über mich</a>
+          <a href="#pricing">Leistungen</a>
+          <a href="media.html">chritakk.media</a>
+          <a href="#contact">Kontakt</a>
+        </div>
+        <div class="footer-col">
+          <h5>Social</h5>
+          <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.linkedin.com/in/chritakk-photography/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="mailto:chritakk.photography@gmail.com">E-Mail</a>
+          <a href="#imprint">Impressum</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 chritakk.photography</span>
+        <span>Made mit &#9829; und viel Kaffee</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- IMPRESSUM -->
+  <section class="section" id="imprint">
+    <div class="container">
+      <p class="section-label text-center reveal">Impressum</p>
+      <h2 class="section-title text-center reveal" style="margin-bottom:2.5rem;">Angaben gem&auml;&szlig; &sect; 5 TMG</h2>
+      <div class="imprint-wrap reveal">
+        <p><strong>Christian Takkin</strong></p>
+        <p>Fotografie</p>
+        <p>Geislmayrstra&szlig;e 6</p>
+        <p>85051 Ingolstadt</p>
+        <p><br>E-Mail: <a href="mailto:chritakk.photography@gmail.com">chritakk.photography@gmail.com</a></p>
+        <p>Instagram: <a href="https://www.instagram.com/chritakk.photography/" target="_blank" rel="noopener">@chritakk.photography</a></p>
+        <p><br><strong>Verantwortlich f&uuml;r den Inhalt nach &sect; 55 Abs. 2 RStV:</strong></p>
+        <p>Christian Takkin, Geislmayrstra&szlig;e 6, 85051 Ingolstadt</p>
+        <p><br><strong>Haftungsausschluss:</strong></p>
+        <p>Trotz sorgf&auml;ltiger inhaltlicher Kontrolle &uuml;bernehmen wir keine Haftung f&uuml;r die Inhalte externer Links. F&uuml;r den Inhalt der verlinkten Seiten sind ausschlie&szlig;lich deren Betreiber verantwortlich.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="lbClose">&times;</button>
+    <div class="lb-nav">
+      <button id="lbPrev">&#8249;</button>
+      <button id="lbNext">&#8250;</button>
+    </div>
+    <img id="lbImg" src="" alt="" />
+    <p class="lb-caption" id="lbCaption"></p>
+  </div>
+
+  <!-- BACK TO TOP -->
+  <button id="backToTop" aria-label="Nach oben">&#8593;</button>
+
+  <script>
+    // ============================
+    // DATA
+    // ============================
+    /*
+     * ============================
+     * FOTO-DATEN – LOKALE BILDER
+     * ============================
+     * Dieses Array wird automatisch von generate-gallery.ps1 befüllt.
+     *
+     * So funktioniert's:
+     *   1. Sortiere deine Fotos in die Unterordner:
+     *        images/events/       → Events
+     *        images/portrait/     → Portrait
+     *        images/animals/      → Tiere
+     *        images/product/      → Produkte
+     *        images/automotive/   → Automotive
+     *        images/rollingshots/  → Rollingshots
+     *        images/newborn/      → Newborn
+     *   2. Führe generate-gallery.ps1 aus
+     *   3. Fertig! Der Array wird mit deinen echten Bildern ersetzt.
+     *
+     * Beispieleinträge bis dahin:
+     */
+        const photos = [
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695848/chritakk/krzr5qermcqkczlcszmh.jpg', alt:'Foto 5287', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695850/chritakk/qdzrud8tspcfwrbe1ucp.jpg', alt:'Foto 5295', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695849/chritakk/rkyjumoc6vvskaexkdc4.jpg', alt:'Foto 5359', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695851/chritakk/shk7a9piintidsgybkaf.jpg', alt:'Foto 5179', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695851/chritakk/yljhzmwa5e0teni9y3b1.jpg', alt:'Foto 5272', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695853/chritakk/vwcdxlwydqusdec6wsi2.jpg', alt:'Foto 5174', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695852/chritakk/vivg8wdwb4fxaaopceth.jpg', alt:'Foto 5366', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695853/chritakk/uhc1fm79epiqrhnvjibz.jpg', alt:'Foto 5252', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695854/chritakk/p2lqa6hr76ctnr6ufhrt.jpg', alt:'Foto 5402', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695855/chritakk/hlz7rdadb396jy3qbzju.jpg', alt:'Foto 5194', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695855/chritakk/gspgydihfgodxqfur7e0.jpg', alt:'Foto 5148', h:1.5 },
+      { cat:'portrait', img:'https://res.cloudinary.com/l4zkxzps/image/upload/v1792695856/chritakk/pxdnklskeurp9yye7pke.jpg', alt:'Foto 5269', h:1.5 },
+    ];
+    // Alte Galerie aus der GitHub-Version c39d76f (92 Fotos)
+// Direkt NACH dem vorhandenen const photos = [...]; einfügen.
+const bisherigeFotos = `
+automotive 1792063819 DSC03082
+automotive 1792063821 DSC03099
+automotive 1792063824 DSC03199
+automotive 1792063825 DSC03246
+automotive 1792063827 DSC03287
+automotive 1792063829 DSC03297
+automotive 1792063831 DSC03514
+automotive 1792063832 DSC03586
+automotive 1792063834 DSC05367
+automotive 1792063836 DSC05380
+automotive 1792063838 DSC05399
+rollingshots 1792063839 DSC06360
+rollingshots 1792063841 DSC06434
+automotive 1792063843 DSC06657
+automotive 1792063844 DSC06660
+automotive 1792063846 DSC06735
+automotive 1792063847 DSC06767
+rollingshots 1792063849 DSC08487
+rollingshots 1792063851 DSC08603
+animals 1792063853 DSC08653
+animals 1792063855 DSC08654
+animals 1792063856 DSC08672
+animals 1792063858 IMG_0321
+animals 1792063860 IMG_0876
+animals 1792063862 IMG_1113
+newborn 1792063864 IMG_1173
+newborn 1792063865 IMG_1176
+newborn 1792063867 IMG_1177
+newborn 1792063868 IMG_1200
+newborn 1792063870 IMG_1201
+newborn 1792063872 IMG_1203
+newborn 1792063873 IMG_1206
+animals 1792063875 IMG_1583
+rollingshots 1792063877 IMG_1597
+automotive 1792063878 IMG_1603
+rollingshots 1792063880 IMG_1802
+animals 1792063882 IMG_2145
+animals 1792063884 IMG_2146
+animals 1792063886 IMG_2289
+animals 1792063887 IMG_2290
+animals 1792063889 IMG_3316
+animals 1792063890 IMG_3356
+animals 1792063892 IMG_3452
+animals 1792063894 IMG_3454
+animals 1792063896 IMG_3486
+animals 1792063897 IMG_3492
+automotive 1792063899 IMG_3817
+animals 1792063901 IMG_3850
+animals 1792063902 IMG_3859
+animals 1792063905 IMG_3868
+animals 1792063907 IMG_3869
+portrait 1792063908 IMG_4449
+rollingshots 1792063910 IMG_4901
+rollingshots 1792063912 IMG_4929
+automotive 1792063915 IMG_4949
+automotive 1792063920 IMG_5826
+automotive 1792063924 IMG_5829
+automotive 1792063926 IMG_5833
+portrait 1792063928 IMG_6037
+portrait 1792063930 IMG_7014
+automotive 1792063932 IMG_7461
+automotive 1792063934 IMG_7462
+automotive 1792063936 IMG_7463
+automotive 1792063938 IMG_7471
+automotive 1792063939 IMG_7475
+automotive 1792063941 IMG_7491
+automotive 1792063943 IMG_7622
+rollingshots 1792063944 IMG_7623
+automotive 1792063946 IMG_7625
+automotive 1792063949 IMG_7628
+automotive 1792063951 IMG_7630
+portrait 1792063954 IMG_7946
+animals 1792063956 IMG_8019
+animals 1792063958 IMG_8036
+animals 1792063960 IMG_8038
+animals 1792063962 IMG_8271
+animals 1792063964 IMG_8272
+animals 1792063966 IMG_8275
+animals 1792063967 IMG_8278
+automotive 1792063970 IMG_8768
+automotive 1792063972 IMG_8769
+automotive 1792063974 IMG_8771
+automotive 1792063976 IMG_8772
+automotive 1792063978 IMG_8776
+automotive 1792063980 IMG_8777
+automotive 1792063981 IMG_8780
+automotive 1792063984 IMG_8787
+automotive 1792063986 IMG_8789
+automotive 1792063988 IMG_8790
+automotive 1792063990 IMG_8800
+automotive 1792063993 IMG_8814
+automotive 1792063996 IMG_8816
+`.trim().split("\n").map(zeile => {
+  const [cat, version, datei] = zeile.trim().split(/\s+/);
+  const img = `https://res.cloudinary.com/l4zkxzps/image/upload/v${version}/chritakk/${datei}.jpg`;
+  const alt = cat === "rollingshots" ? "Rollingshots" :
+              cat === "portrait" ? "Portrait" :
+              `Foto ${Number(datei.match(/(\d+)$/)?.[1] || 0)}`;
+  return { cat, img, alt, h: 1.5 };
+});
+// Bereits vorhandene (neue) Fotos bleiben erhalten; keine Duplikate.
+const bekannteBildlinks = new Set(photos.map(foto => foto.img));
+for (const foto of bisherigeFotos) {
+  if (!bekannteBildlinks.has(foto.img)) {
+    photos.push(foto);
+    bekannteBildlinks.add(foto.img);
+  }
+}
+
+    // ============================
+    // LOADER
+    // ============================
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').classList.add('hidden'), 600);
+    });
+
+    // ============================
+    // CURSOR
+    // ============================
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    document.addEventListener('mousemove', e => {
+      dot.style.left = e.clientX + 'px';
+      dot.style.top = e.clientY + 'px';
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    });
+    document.querySelectorAll('a, button, .masonry-item, .filter-btn, .price-card').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+    });
+
+    // ============================
+    // PROGRESS BAR & NAV SCROLL
+    // ============================
+    const navbar = document.getElementById('navbar');
+    const progressBar = document.getElementById('progressBar');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      progressBar.style.width = Math.min(progress, 100) + '%';
+
+      navbar.classList.toggle('scrolled', scrollTop > 80);
+      document.getElementById('backToTop').classList.toggle('show', scrollTop > 500);
+    });
+
+    // ============================
+    // HAMBURGER
+    // ============================
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // ============================
+    // MASONRY GALLERY
+    // ============================
+    const masonry = document.getElementById('masonryGrid');
+    let filteredPhotos = [];
+
+    function renderMasonry(filter = 'all') {
+      // Wenn alle Fotos cat:'all' haben (noch nicht sortiert), ignoriere Filter
+      const hasRealCategories = photos.some(p => p.cat !== 'all');
+      const items = (!hasRealCategories || filter === 'all') ? photos : photos.filter(p => p.cat === filter);
+      filteredPhotos = items;
+      masonry.innerHTML = '';
+      items.forEach((photo, idx) => {
+        const div = document.createElement('div');
+        div.className = 'masonry-item';
+        div.style.aspectRatio = 'auto';
+        const img = document.createElement('img');
+        img.src = photo.img;
+        img.alt = photo.alt;
+        img.loading = 'lazy';
+        div.appendChild(img);
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        overlay.innerHTML = `<span>${photo.alt}</span>`;
+        div.appendChild(overlay);
+        div.addEventListener('click', () => openLightbox(idx));
+        masonry.appendChild(div);
+      });
+    }
+
+    // Filter
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderMasonry(btn.dataset.filter);
+        // Beschreibung aktualisieren
+        const desc = document.getElementById('galleryDesc');
+        const descs = {
+          all: 'All meine Arbeiten – Events, Portrait, Tiere, Produkte, Automotive, Rollingshots und Newborn. Wähle eine Kategorie oben.',
+          events: '🎉 Hochzeiten, Geburtstage, Firmenfeiern – ich halte die besonderen Momente deines Events fest. Von der Vorbereitung bis zur letzten Stunde.',
+          portrait: '👤 Portraits, die deine Persönlichkeit zeigen. Ob klassisch, modern oder kreativ – im Studio oder an deiner Lieblingslocation.',
+          animals: '🐾 Die treuen Seelen an deiner Seite. Tierfotografie mit Geduld und Feingefühl – für Bilder, die das Wesen deines Lieblings einfangen.',
+          product: '📦 Produktfotografie für dein Business. Detailreich und professionell – ob für Onlineshop, Social Media oder Katalog.',
+          automotive: '🏎️ Fahrzeuge in Szene gesetzt. Von der eleganten Limousine bis zum kraftvollen Sportwagen – dynamisch und stilvoll.',
+          rollingshots: '🚗💨 Dynamische Fahraufnahmen bei voller Fahrt. Der Adrenalin-Kick unter meinen Arbeiten – für einzigartige Perspektiven.',
+          newborn: '👶 Die ersten Tage und Wochen deines Babys. Sanft, sicher und liebevoll – Erinnerungen für die Ewigkeit.',
+        };
+        desc.textContent = descs[btn.dataset.filter] || descs.all;
+        desc.style.opacity = '0';
+        setTimeout(() => desc.style.opacity = '1', 50);
+      });
+    });
+
+    // ============================
+    // LIGHTBOX
+    // ============================
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCaption = document.getElementById('lbCaption');
+    let currentIdx = 0;
+
+    function openLightbox(idx) {
+      currentIdx = idx;
+      const p = filteredPhotos[idx];
+      lbImg.src = p.img;
+      lbImg.alt = p.alt;
+      lbCaption.textContent = p.alt;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigateLB(-1);
+      if (e.key === 'ArrowRight') navigateLB(1);
+    });
+    document.getElementById('lbPrev').addEventListener('click', () => navigateLB(-1));
+    document.getElementById('lbNext').addEventListener('click', () => navigateLB(1));
+
+    function navigateLB(dir) {
+      currentIdx = (currentIdx + dir + filteredPhotos.length) % filteredPhotos.length;
+      const p = filteredPhotos[currentIdx];
+      lbImg.src = p.img;
+      lbImg.alt = p.alt;
+      lbCaption.textContent = p.alt;
+    }
+
+    // ============================
+    // PRICING CAROUSEL (nur mobil)
+    // ============================
+    const pricingGrid = document.getElementById('pricingGrid');
+    const pricingDots = document.getElementById('pricingDots');
+    const pricingPrev = document.getElementById('pricingPrev');
+    const pricingNext = document.getElementById('pricingNext');
+    const pricingCards = pricingGrid?.querySelectorAll('.price-card');
+    
+    if (pricingCards && pricingCards.length > 0 && pricingDots) {
+      // Dots generieren
+      pricingCards.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'pricing-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('data-idx', i);
+        dot.addEventListener('click', () => scrollToCard(i));
+        pricingDots.appendChild(dot);
+      });
+
+      function scrollToCard(idx) {
+        const card = pricingCards[idx];
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      }
+
+      pricingPrev?.addEventListener('click', () => {
+        const scrollLeft = pricingGrid.scrollLeft;
+        const cardWidth = pricingCards[0]?.offsetWidth || 300;
+        const newIdx = Math.max(0, Math.round(scrollLeft / (cardWidth + 16)) - 1);
+        scrollToCard(newIdx);
+      });
+
+      pricingNext?.addEventListener('click', () => {
+        const scrollLeft = pricingGrid.scrollLeft;
+        const cardWidth = pricingCards[0]?.offsetWidth || 300;
+        const newIdx = Math.min(pricingCards.length - 1, Math.round(scrollLeft / (cardWidth + 16)) + 1);
+        scrollToCard(newIdx);
+      });
+
+      // Dots aktualisieren beim Scrollen
+      pricingGrid.addEventListener('scroll', () => {
+        const scrollLeft = pricingGrid.scrollLeft;
+        const cardWidth = pricingCards[0]?.offsetWidth || 300;
+        const activeIdx = Math.round(scrollLeft / (cardWidth + 16));
+        pricingDots.querySelectorAll('.pricing-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === activeIdx);
+        });
+      });
+    }
+
+    // ============================
+    // STATS COUNTER
+    // ============================
+    function animateCounters() {
+      document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+        const target = parseInt(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        let current = 0;
+        const step = Math.max(1, Math.floor(target / 40));
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(timer); }
+          el.textContent = current + suffix;
+        }, 30);
+      });
+    }
+
+    // ============================
+    // TESTIMONIALS
+    // ============================
+    let testimonialIdx = 0;
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots = document.querySelectorAll('.testimonial-dots button');
+
+    function showTestimonial(idx) {
+      slides.forEach((s,i) => s.classList.toggle('active', i === idx));
+      dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+      testimonialIdx = idx;
+    }
+
+    dots.forEach(d => d.addEventListener('click', () => showTestimonial(parseInt(d.dataset.slide))));
+    setInterval(() => showTestimonial((testimonialIdx + 1) % slides.length), 5000);
+
+    // ============================
+    // REVEAL OBSERVER
+    // ============================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Stats counter feuern
+          if (entry.target.querySelector('.stats-grid')) {
+            animateCounters();
+            revealObserver.unobserve(entry.target);
+          } else {
+            revealObserver.unobserve(entry.target);
+          }
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // ============================
+    // FORM
+    // ============================
+    document.getElementById('contactForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('button');
+      const original = btn.textContent;
+      btn.textContent = 'Wird gesendet …';
+      btn.disabled = true;
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        if (res.ok) {
+          const name = form.querySelector('input[name="name"]').value || 'Christian';
+          alert(`✅ Danke für deine Nachricht, ${name}! Ich melde mich so schnell wie möglich bei dir – versprochen 📸`);
+          form.reset();
+        } else {
+          alert('❌ Leider hat’s nicht geklappt. Bitte schreib mir direkt eine E-Mail an chritakk.photography@gmail.com');
+        }
+      } catch {
+        alert('❌ Netzwerkfehler. Bitte schreib mir direkt an chritakk.photography@gmail.com');
+      }
+      btn.textContent = original;
+      btn.disabled = false;
+    });
+
+    // ============================
+    // BACK TO TOP
+    // ============================
+    document.getElementById('backToTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ============================
+    // PARALLAX HERO
+    // ============================
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      heroBg.style.transform = `scale(1.05) translateY(${scrollY * .15}px)`;
+    });
+
+    // ============================
+    // INITIAL
+    // ============================
+    renderMasonry('all');
+
+    // CTP Studio 2.1: öffentliche Galerie live aus Cloudflare laden.
+    // Die bisherigen Fotos bleiben nur bei Verbindungsproblemen als Fallback sichtbar.
+    (async function loadCTPGallery() {
+      try {
+        const response = await fetch('https://ctp-studio-secure.pages.dev/_ctp/gallery', {
+          cache: 'no-store', mode: 'cors'
+        });
+        if (!response.ok) throw new Error('Galerie-API: HTTP ' + response.status);
+        const payload = await response.json();
+        if (!payload || !Array.isArray(payload.photos)) throw new Error('Unerwartetes Galerieformat');
+        const allowed = new Set(['published', 'public', 'visible', 'live', 'veroeffentlicht', 'veröffentlicht']);
+        const blocked = new Set(['draft', 'hidden', 'archived', 'entwurf', 'ausgeblendet', 'archiviert']);
+        const live = payload.photos.filter(p => {
+          if (!p || typeof p !== 'object') return false;
+          if (p.is_public === false || p.published === false || p.visible === false) return false;
+          const status = String(p.status || '').toLowerCase();
+          if (blocked.has(status)) return false;
+          if (status && !allowed.has(status)) return false;
+          return true;
+        }).map(p => ({
+          cat: String(p.cat || p.category || 'all').toLowerCase(),
+          img: p.img || p.url || p.image_url || p.secure_url,
+          alt: String(p.alt || p.title || p.caption || 'Fotografie'),
+          h: 1.5,
+          order: Number(p.sort_order ?? p.sortOrder ?? p.position ?? 0)
+        })).filter(p => typeof p.img === 'string' && /^https:\/\//i.test(p.img));
+        live.sort((a,b) => a.order - b.order);
+        // Bei erfolgreicher API-Antwort ist die Datenbank die einzige Quelle.
+        // Auch eine leere Liste ist gültig und darf nicht durch alte Fotos ersetzt werden.
+        photos.splice(0, photos.length, ...live);
+        const selected = document.querySelector('.filter-btn.active');
+        renderMasonry(selected ? selected.dataset.filter : 'all');
+      } catch (error) {
+        console.warn('CTP Studio Galerie nicht erreichbar; bisherige Galerie bleibt sichtbar:', error);
+      }
+    })();
+  </script>
+
+</body>
+</html>
