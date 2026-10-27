@@ -3,29 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Google Analytics: erst nach ausdrücklicher Einwilligung laden -->
+  <!-- Einwilligung für die optionale, eigene CTP-Besuchsstatistik -->
   <script>
     const CTP_CONSENT_KEY = 'ctp-analytics-consent-v1';
     function ctpReadConsent() {
       try { return localStorage.getItem(CTP_CONSENT_KEY); } catch (_) { return null; }
     }
-    function ctpLoadAnalytics() {
-      if (window.ctpAnalyticsLoaded) return;
-      window.ctpAnalyticsLoaded = true;
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function(){ dataLayer.push(arguments); };
-      gtag('js', new Date());
-      gtag('consent', 'default', {
-        analytics_storage: 'granted', ad_storage: 'denied',
-        ad_user_data: 'denied', ad_personalization: 'denied'
-      });
-      gtag('config', 'G-FY5GLMKLYZ', { anonymize_ip: true });
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-FY5GLMKLYZ';
-      document.head.appendChild(script);
-    }
-    if (ctpReadConsent() === 'accepted') ctpLoadAnalytics();
   </script>
   <meta name="description" content="Christian Takkin – Fotograf aus München/Ingolstadt. Events, Portrait, Tiere, Automotive, Rollingshots, Produkte und Newborn. Jetzt Termin anfragen!" />
   <meta name="keywords" content="Fotograf, München, Ingolstadt, Christian Takkin, chritakk, Eventfotograf, Portraitfotograf, Rollingshots, Automotive Fotograf, Tierfotograf" />
@@ -1526,7 +1509,7 @@
 
   <div id="ctpCookieBanner" role="dialog" aria-label="Datenschutz-Einstellungen" aria-modal="false" style="display:none;position:fixed;bottom:16px;left:16px;right:16px;max-width:600px;margin:auto;z-index:100001;background:#171717;color:#f0f0f0;border:1px solid #d4a853;border-radius:14px;padding:22px;box-shadow:0 12px 45px #000b">
     <p style="font-size:1.1rem;margin-bottom:8px"><strong>Deine Privatsphäre</strong></p>
-    <p style="font-size:.9rem;color:#ccc;margin-bottom:16px">Wir verwenden technisch notwendige Funktionen. Google Analytics wird nur mit deiner Zustimmung geladen. Mehr dazu in unserer <a href="#privacy">Datenschutzerklärung</a>.</p>
+    <p style="font-size:.9rem;color:#ccc;margin-bottom:16px">Wir verwenden technisch notwendige Funktionen. Eine einfache, aggregierte Besuchsstatistik über CTP Studio wird nur mit deiner Zustimmung aktiviert. Mehr dazu in unserer <a href="#privacy">Datenschutzerklärung</a>.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button type="button" id="ctpRejectAnalytics" style="flex:1;min-width:140px;background:#333;color:white;border:1px solid #777;border-radius:8px;padding:12px;cursor:pointer">Nur notwendige</button>
       <button type="button" id="ctpAcceptAnalytics" style="flex:1;min-width:140px;background:#d4a853;color:#0a0a0a;border:0;border-radius:8px;padding:12px;cursor:pointer;font-weight:bold">Alle akzeptieren</button>
@@ -1540,8 +1523,8 @@
       function choose(value) {
         try { localStorage.setItem(CTP_CONSENT_KEY, value); } catch (_) {}
         banner.style.display = 'none';
-        if (value === 'accepted') ctpLoadAnalytics();
-        else if (window.ctpAnalyticsLoaded) location.reload();
+        if (value === 'accepted') document.dispatchEvent(new Event('ctp-analytics-accepted'));
+        
       }
       document.getElementById('ctpAcceptAnalytics').addEventListener('click', () => choose('accepted'));
       document.getElementById('ctpRejectAnalytics').addEventListener('click', () => choose('rejected'));
@@ -2086,6 +2069,40 @@ for (const foto of bisherigeFotos) {
       } catch (error) {
         console.warn('CTP Studio Galerie nicht erreichbar; bisherige Galerie bleibt sichtbar:', error);
       }
+    })();
+  </script>
+
+  <!-- CTP Studio: datensparsame, aggregierte Website-Statistik (nur mit Analytics-Einwilligung). -->
+  <script>
+    (() => {
+      const endpoint = 'https://ctp-studio-secure.pages.dev/_ctp/track';
+      const consentKey = 'ctp-analytics-consent-v1';
+      let sent = false;
+      function recordVisit() {
+        if (sent) return;
+        try { if (localStorage.getItem(consentKey) !== 'accepted') return; }
+        catch (_) { return; }
+        sent = true;
+        let sessionStart = false;
+        try {
+          const key = 'ctp-visit-tab-v1';
+          sessionStart = sessionStorage.getItem(key) !== '1';
+          sessionStorage.setItem(key, '1');
+        } catch (_) { sessionStart = true; }
+        fetch(endpoint, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: location.pathname, session_start: sessionStart }),
+          keepalive: true
+        }).catch(() => {});
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', recordVisit, { once: true });
+      else recordVisit();
+      document.addEventListener('ctp-analytics-accepted', recordVisit);
+      window.addEventListener('storage', event => {
+        if (event.key === consentKey && event.newValue === 'accepted') recordVisit();
+      });
     })();
   </script>
 
