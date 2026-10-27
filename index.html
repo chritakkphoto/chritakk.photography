@@ -483,6 +483,15 @@
     @media (max-width:900px) { .masonry { columns: 2; column-gap: .8rem; } }
     @media (max-width:560px) { .masonry { columns: 2; column-gap: 6px; } }
 
+    /* Galerie-Navigation – Desktop und Mobil */
+    .gallery-more-wrap { text-align:center; margin:2.5rem auto 0; }
+    .gallery-more-wrap[hidden] { display:none; }
+    .gallery-count { color:var(--muted); font-size:.85rem; margin-bottom:1rem; }
+    .gallery-more-btn { border:1px solid var(--gold); background:rgba(212,168,83,.09); color:var(--gold); border-radius:40px; padding:.9rem 2rem; cursor:pointer; font-family:var(--font-sans); font-size:.8rem; letter-spacing:1.5px; text-transform:uppercase; }
+    .gallery-more-btn:hover { background:var(--gold); color:var(--bg); }
+    .gallery-skip { display:block; width:max-content; max-width:100%; margin:1.25rem auto 0; color:var(--muted); font-size:.85rem; }
+    @media(max-width:560px) { .gallery-more-btn { width:100%; max-width:330px; } }
+
     /* Galerie-Beschreibung */
     .gallery-desc {
       max-width: 650px; margin: -2rem auto 3rem;
@@ -1148,6 +1157,11 @@
       <p class="gallery-desc" id="galleryDesc">All meine Arbeiten – Events, Portrait, Tiere, Produkte, Automotive, Rollingshots und Newborn.</p>
 
       <div class="masonry" id="masonryGrid"></div>
+      <div id="galleryMoreWrap" class="gallery-more-wrap" hidden>
+        <p id="galleryCount" class="gallery-count" aria-live="polite"></p>
+        <button id="galleryMoreBtn" class="gallery-more-btn" type="button">Weitere Bilder anzeigen</button>
+        <a href="#about" class="gallery-skip">Galerie überspringen ↓</a>
+      </div>
     </div>
   </section>
 
@@ -1760,14 +1774,31 @@ for (const foto of bisherigeFotos) {
     // ============================
     const masonry = document.getElementById('masonryGrid');
     let filteredPhotos = [];
+    const GALLERY_BATCH = 12;
+    let galleryVisibleCount = GALLERY_BATCH;
+    const galleryMoreWrap = document.getElementById('galleryMoreWrap');
+    const galleryMoreBtn = document.getElementById('galleryMoreBtn');
+    const galleryCount = document.getElementById('galleryCount');
 
-    function renderMasonry(filter = 'all') {
+    function updateGalleryControls() {
+      const shown = Math.min(galleryVisibleCount, filteredPhotos.length);
+      galleryMoreWrap.hidden = filteredPhotos.length === 0;
+      galleryCount.textContent = `${shown} von ${filteredPhotos.length} Bildern angezeigt`;
+      galleryMoreBtn.hidden = shown >= filteredPhotos.length;
+    }
+    galleryMoreBtn.addEventListener('click', () => {
+      galleryVisibleCount += GALLERY_BATCH;
+      renderMasonry(document.querySelector('.filter-btn.active')?.dataset.filter || 'all', false);
+    });
+
+    function renderMasonry(filter = 'all', resetCount = true) {
+      if (resetCount) galleryVisibleCount = GALLERY_BATCH;
       // Wenn alle Fotos cat:'all' haben (noch nicht sortiert), ignoriere Filter
       const hasRealCategories = photos.some(p => p.cat !== 'all');
       const items = (!hasRealCategories || filter === 'all') ? photos : photos.filter(p => p.cat === filter);
       filteredPhotos = items;
       masonry.innerHTML = '';
-      items.forEach((photo, idx) => {
+      items.slice(0, galleryVisibleCount).forEach((photo, idx) => {
         const div = document.createElement('div');
         div.className = 'masonry-item';
         div.style.aspectRatio = 'auto';
@@ -1783,6 +1814,7 @@ for (const foto of bisherigeFotos) {
         div.addEventListener('click', () => openLightbox(idx));
         masonry.appendChild(div);
       });
+      updateGalleryControls();
     }
 
     // Filter
